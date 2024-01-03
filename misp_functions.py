@@ -81,15 +81,6 @@ def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
             print("     " + str(k) +"=" + str(v))
         print("- Finished Body Request String")
 
-    #body = {
-    #    "returnFormat": "json",
-    #    "type": ["ip-dst", "domain", "hostname", "url", "md5", "sha256"],
-    #    "enforceWarninglist": "true",
-    #    "to_ids": "true",
-    #    "deleted": False,
-    #    "last": "7d"
-    #}
-
     relative_path = 'attributes/restSearch'
     
     if misp_is_https == True:
