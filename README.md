@@ -50,6 +50,7 @@ falco_domain_list_name='malicious_domain_list'
 #   Debug                                    #
 ##############################################
 debug = True
+debugindicators = False
 debugyaml = False
 
 ##############################################

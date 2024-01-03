@@ -5,6 +5,8 @@ from datetime import date
 import dateutil.tz
 import ipaddress
 import json 
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 ##############################################
@@ -104,29 +106,29 @@ def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
         match ioc_type: 
             case "ip-dst":
                 if checkIPv4Address(ioc_value):
-                    if debug == True: print(" - Adding IPv4 Indicator: " + str(ioc_value))
+                    if debugindicators == True: print(" - Adding IPv4 Indicator: " + str(ioc_value))
                     itemAdd(ip4_list,ioc_value)
                 elif checkIPv6Address(ioc_value):
-                    if debug == True: print(" - Adding IPv6 Indicator: " + str(ioc_value))
+                    if debugindicators == True: print(" - Adding IPv6 Indicator: " + str(ioc_value))
                     itemAdd(ip6_list,ioc_value)
                 else: 
                     if debug == True: print(" - Unknown Indicator Value: " + str(ioc_value))
             case "domain":
                 if checkDomainName(ioc_value):
-                    if debug == True: print(" - Adding Domain Indicator: " + str(ioc_value))
+                    if debugindicators == True: print(" - Adding Domain Indicator: " + str(ioc_value))
                     itemAdd(domain_list,ioc_value)
             case "hostname":
                 if checkDomainName(ioc_value):
-                    if debug == True: print(" - Adding Hostname Indicator: " + str(ioc_value))
+                    if debugindicators == True: print(" - Adding Hostname Indicator: " + str(ioc_value))
                     itemAdd(domain_list,ioc_value)
             case "url":
-                    if debug == True: print(" - Adding URL Indicator: " + str(ioc_value))
+                    if debugindicators == True: print(" - Adding URL Indicator: " + str(ioc_value))
                     itemAdd(uri_list,ioc_value)
             case "md5":
-                    if debug == True: print(" - Adding MD5 Indicator: " + str(ioc_value))
+                    if debugindicators == True: print(" - Adding MD5 Indicator: " + str(ioc_value))
                     itemAdd(file_list,ioc_value)
             case "sha256":
-                    if debug == True: print(" - Adding SHA256 Indicator: " + str(ioc_value))
+                    if debugindicators == True: print(" - Adding SHA256 Indicator: " + str(ioc_value))
                     itemAdd(file_list,ioc_value)
         
 

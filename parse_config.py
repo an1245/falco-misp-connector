@@ -19,6 +19,8 @@ def parseConfig():
     if not 'debug' in globals():
         print("Configuration file parameter 'debug' does not seem to exist")
         sys.exit(0)
+    if not 'debugindicators' in globals():
+        print("Configuration file parameter 'debugindicators' does not seem to exist")
     if not 'debugyaml' in globals():
         print("Configuration file parameter 'debugyaml' does not seem to exist")
         sys.exit(0)
@@ -56,6 +58,9 @@ def parseConfig():
         sys.exit(0)
     if not (debug == True or debug == False):
         print("Configuration file parameter 'debug' does not seem to be a file.  Debug must equal True or False")
+        sys.exit(0)
+    if not (debugindicators == True or debugindicators == False):
+        print("Configuration file parameter 'debugindicators' does not seem to be a file.  Debug must equal True or False")
         sys.exit(0)
     if not (debugyaml == True or debugyaml == False):
         print("Configuration file parameter 'debugyaml' does not seem to be a file.  Debug must equal True or False")
