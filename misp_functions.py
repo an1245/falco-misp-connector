@@ -24,10 +24,12 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
 
     if debug == True: print("Fetching New MISP Indicators from: "+ misp_server_url)
     ip4_list, ip6_list, domain_list, file_list, uri_list = pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
+    if debug == True: print("Finished fetching new MISP Indicators from: "+ misp_server_url)
     if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list)
 
     if debug == True: print("Removing Deleted MISP Indicators from: "+ misp_server_url)
     ip4_list, ip6_list, domain_list, file_list, uri_list = pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
+    if debug == True: print("Finished removing Deleted MISP Indicators from: "+ misp_server_url)
     if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list)
 
     return ip4_list, ip6_list, domain_list, file_list, uri_list
@@ -78,10 +80,7 @@ def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
     body = pyMISPBuildHTTPBody(body)
    
     if debug == True:
-        print("- Start Body Request Variables")
-        for k,v in body.items():
-            print("     " + str(k) +"=" + str(v))
-        print("- Finished Body Request String")
+        printMISPBody(body)
 
     relative_path = 'attributes/restSearch'
     
@@ -150,10 +149,7 @@ def pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, file_list, ur
     body = pyMISPBuildHTTPBody(body)
 
     if debug == True:
-        print("- Start Body Request Variables")
-        for k,v in body.items():
-            print("     " + str(k) +"=" + str(v))
-        print("- Finished Body Request String")
+        printMISPBody(body)
     
     if misp_is_https == True:
             protocol = 'https'
@@ -199,3 +195,15 @@ def pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, file_list, ur
                     itemRemove(file_list,ioc_value)
 
     return ip4_list, ip6_list, domain_list, file_list, uri_list
+
+
+##############################################
+#  Print MISP Body Variales                      #
+#      - no return value                     #
+##############################################
+def printMISPBody(body):
+        if debug == True: 
+            print("----------------- MISP Body Variables -----------------")
+            for k,v in body.items():
+                print("--             " + str(k) + "=" + str(v))
+            print("-------------------------------------------------------")
