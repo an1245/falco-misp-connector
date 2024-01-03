@@ -10,6 +10,7 @@ falco_domain_list_name='malicious_domain_list'
 #   Debug                                    #
 ##############################################
 debug = True
+debugindicators = False
 debugyaml = False
 
 ##############################################
@@ -17,7 +18,7 @@ debugyaml = False
 ##############################################
 misp_server_url = 'osint.digitalside.it'
 misp_is_https = True
-misp_auth_key = ''
+misp_auth_key = '{YOUR AUTH KEY}'
 misp_verifycert = False
 
 ##############################################
