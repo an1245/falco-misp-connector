@@ -17,7 +17,7 @@ debugyaml = False
 ##############################################
 misp_server_url = 'osint.digitalside.it'
 misp_is_https = True
-misp_auth_key = '{YOUR AUTH KEY}'
+misp_auth_key = ''
 misp_verifycert = False
 
 ##############################################
@@ -27,4 +27,4 @@ misp_organisation_name = ''
 misp_enforce_warning_list = True
 misp_category_filter = ''
 misp_tag_filter = ''
-misp_min_threat_level = 4
+misp_min_threat_level = 0

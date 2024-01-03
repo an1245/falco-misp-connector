@@ -22,11 +22,11 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
 
     if debug == True: print("Fetching New MISP Indicators from: "+ misp_server_url)
     ip4_list, ip6_list, domain_list, file_list, uri_list = pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
-   
+    if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list)
 
     if debug == True: print("Removing Deleted MISP Indicators from: "+ misp_server_url)
     ip4_list, ip6_list, domain_list, file_list, uri_list = pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
-
+    if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list)
 
     return ip4_list, ip6_list, domain_list, file_list, uri_list
 
@@ -36,28 +36,28 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
 ##############################################
 def pyMISPBuildHTTPBody(body):
 
-    body["returnFormat"]: "json"
-    body["type"]: ["ip-dst", "domain", "hostname", "url", "md5", "sha256"]
+    body["returnFormat"] =  "json"
+    body["type"] = ["ip-dst", "domain", "hostname", "url", "md5", "sha256"]
 
     if 'misp_organisation_name' in globals():
         if len(misp_organisation_name) > 0:
-            body["org"]: misp_organisation_name
+            body["org"] = misp_organisation_name
     
     if 'misp_enforce_warning_list' in globals():
         if (misp_enforce_warning_list == True or misp_enforce_warning_list == False):
-            body["enforceWarninglist"]: misp_enforce_warning_list
+            body["enforceWarninglist"] = misp_enforce_warning_list
        
     if 'misp_category_filter' in globals():
         if len(misp_category_filter) > 0:
-            body["category"]: misp_category_filter
+            body["category"] = misp_category_filter
     
     if 'misp_tag_filter' in globals():
         if len(misp_tag_filter) > 0:
-            body["tags"]: [misp_tag_filter]
+            body["tags"] = [misp_tag_filter]
     
     if 'misp_min_threat_level' in globals():
-        if type(misp_min_threat_level) is int:
-            body["threat_level_id"]: misp_min_threat_level
+        if type(misp_min_threat_level) is int and misp_min_threat_level > 0 and misp_min_threat_level < 4:
+            body["threat_level_id"] = misp_min_threat_level
     
     return body
 
@@ -67,15 +67,19 @@ def pyMISPBuildHTTPBody(body):
 ##############################################
 
 def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
-    relative_path = 'attributes/restSearch'
-    body = {}
-    body["deleted"]: False
-    body["last"]: 7
+   
+    body = {
+            "deleted": False,
+            "last": "7d"
+    }
+ 
     body = pyMISPBuildHTTPBody(body)
    
-    for i in body:
-         print(body.keys(i) +"=" + body.values(i))
-    sys.exit(0)
+    if debug == True:
+        print("- Start Body Request Variables")
+        for k,v in body.items():
+            print("     " + str(k) +"=" + str(v))
+        print("- Finished Body Request String")
 
     #body = {
     #    "returnFormat": "json",
@@ -85,6 +89,8 @@ def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
     #    "deleted": False,
     #    "last": "7d"
     #}
+
+    relative_path = 'attributes/restSearch'
     
     if misp_is_https == True:
             protocol = 'https'
@@ -138,14 +144,19 @@ def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
 
 def pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
     relative_path = '/attributes/restSearch'
+
     body = {
-        "returnFormat": "json",
-        "type": ["ip-dst", "domain", "hostname", "url", "md5", "sha256"],
-        "enforceWarninglist": "true",
-        "to_ids": "true",
-        "deleted": True,
-        "last": "7d"
+            "deleted": True,
+            "last": "7d"
     }
+ 
+    body = pyMISPBuildHTTPBody(body)
+
+    if debug == True:
+        print("- Start Body Request Variables")
+        for k,v in body.items():
+            print("     " + str(k) +"=" + str(v))
+        print("- Finished Body Request String")
     
     if misp_is_https == True:
             protocol = 'https'

@@ -73,7 +73,7 @@ uri_list = []
 # Fetch new indicators from MISP Server         #
 #################################################
 
-print("Fetching new indicators from MISP server: " + str(misp_server_url) )
+print("Contacting MISP Server: " + str(misp_server_url) )
 ip4_list, ip6_list, domain_list, file_list, uri_list = fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
    
 
