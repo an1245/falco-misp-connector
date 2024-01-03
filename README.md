@@ -12,6 +12,12 @@ The plugin requires the follow items to be configured in *config.py*
 - MISP HTTP/HTTPS Setting - does the MISP server use HTTP or HTTPS
 - MISP HTTPS Verify Cert - do you want to verify the HTTPS certificate?
 
+**MISP Filtering details**
+- MISP Organisation Name - retrieve indicators only from a certain organisation - '' means retrieve from all organisations
+- MISP Enforce Warning List - whether to enforce the MISP Warning list - default: true
+- MISP Category Filter - comma separated list of MISP categories to retrieve - '' means retrieve from all categories
+- MISP Tag Filter - comma separated list of MISP tags to retrieve - '' means retrieve from all tags
+- MISP Min Threat Level - minimum threat level to retrieve - use 0 to disable
 
 ## How to get started
 1. Download code from Git
@@ -32,16 +38,36 @@ pip install -r requirements.txt
 
 4. Configure your config.py file with your parameters - examples config below:
 ```
+##############################################
+#   Falco configuration details              #
+##############################################
 falco_ipv4_rules_file='/etc/falco/rules.d/misp-ipv4-indicators.yaml'
 falco_ipv4_list_name='malicious_ip_list'
 falco_domain_rules_file='/etc/falco/rules.d/misp-domain-indicators.yaml'
 falco_domain_list_name='malicious_domain_list'
+
+##############################################
+#   Debug                                    #
+##############################################
 debug = True
 debugyaml = False
+
+##############################################
+#   MISP Connectivity Details                #
+##############################################
 misp_server_url = 'osint.digitalside.it'
 misp_is_https = True
 misp_auth_key = '{YOUR AUTH KEY}'
 misp_verifycert = False
+
+##############################################
+#   MISP Filtering Details                   #
+##############################################
+misp_organisation_name = ''
+misp_enforce_warning_list = True
+misp_category_filter = ''
+misp_tag_filter = ''
+misp_min_threat_level = 0
 ```
 
 5. Execute the connector
