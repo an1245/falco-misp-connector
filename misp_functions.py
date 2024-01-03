@@ -31,20 +31,60 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
     return ip4_list, ip6_list, domain_list, file_list, uri_list
 
 ##############################################
+#   Build HTTP Body                          #
+#       - returns: server connection object  #
+##############################################
+def pyMISPBuildHTTPBody(body):
+
+    body["returnFormat"]: "json"
+    body["type"]: ["ip-dst", "domain", "hostname", "url", "md5", "sha256"]
+
+    if 'misp_organisation_name' in globals():
+        if len(misp_organisation_name) > 0:
+            body["org"]: misp_organisation_name
+    
+    if 'misp_enforce_warning_list' in globals():
+        if (misp_enforce_warning_list == True or misp_enforce_warning_list == False):
+            body["enforceWarninglist"]: misp_enforce_warning_list
+       
+    if 'misp_category_filter' in globals():
+        if len(misp_category_filter) > 0:
+            body["category"]: misp_category_filter
+    
+    if 'misp_tag_filter' in globals():
+        if len(misp_tag_filter) > 0:
+            body["tags"]: [misp_tag_filter]
+    
+    if 'misp_min_threat_level' in globals():
+        if type(misp_min_threat_level) is int:
+            body["threat_level_id"]: misp_min_threat_level
+    
+    return body
+
+##############################################
 #   Collect New MISP Indicators              #
 #       - returns: server connection object  #
 ##############################################
 
 def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
     relative_path = 'attributes/restSearch'
-    body = {
-        "returnFormat": "json",
-        "type": ["ip-dst", "domain", "hostname", "url", "md5", "sha256"],
-        "enforceWarninglist": "true",
-        "to_ids": "true",
-        "deleted": False,
-        "last": "7d"
-    }
+    body = {}
+    body["deleted"]: False
+    body["last"]: 7
+    body = pyMISPBuildHTTPBody(body)
+   
+    for i in body:
+         print(body.keys(i) +"=" + body.values(i))
+    sys.exit(0)
+
+    #body = {
+    #    "returnFormat": "json",
+    #    "type": ["ip-dst", "domain", "hostname", "url", "md5", "sha256"],
+    #    "enforceWarninglist": "true",
+    #    "to_ids": "true",
+    #    "deleted": False,
+    #    "last": "7d"
+    #}
     
     if misp_is_https == True:
             protocol = 'https'
