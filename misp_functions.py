@@ -41,7 +41,7 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
 def pyMISPBuildHTTPBody(body):
 
     body["returnFormat"] =  "json"
-    body["type"] = ["ip-dst", "domain", "hostname", "url", "md5", "sha256"]
+    body["type"] = ["ip-dst", "domain", "hostname", "url", "sha256"]
 
     if 'misp_organisation_name' in globals():
         if len(misp_organisation_name) > 0:
@@ -74,7 +74,7 @@ def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
    
     body = {
             "deleted": False,
-            "last": "7d"
+            "last": "30d"
     }
  
     body = pyMISPBuildHTTPBody(body)
@@ -123,9 +123,6 @@ def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
             case "url":
                     if debugindicators == True: print(" - Adding URL Indicator: " + str(ioc_value))
                     itemAdd(uri_list,ioc_value)
-            case "md5":
-                    if debugindicators == True: print(" - Adding MD5 Indicator: " + str(ioc_value))
-                    itemAdd(file_list,ioc_value)
             case "sha256":
                     if debugindicators == True: print(" - Adding SHA256 Indicator: " + str(ioc_value))
                     itemAdd(file_list,ioc_value)
@@ -143,7 +140,7 @@ def pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, file_list, ur
 
     body = {
             "deleted": True,
-            "last": "7d"
+            "last": "30d"
     }
  
     body = pyMISPBuildHTTPBody(body)
@@ -187,9 +184,6 @@ def pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, file_list, ur
             case "url":
                     if debug == True: print(" - Removing URL Indicator: " + str(ioc_value))
                     itemRemove(uri_list,ioc_value)
-            case "md5":
-                    if debug == True: print(" - Removing MD5 Indicator: " + str(ioc_value))
-                    itemRemove(file_list,ioc_value)
             case "sha256":
                     if debug == True: print(" - Removing SHA256 Indicator: " + str(ioc_value))
                     itemRemove(file_list,ioc_value)

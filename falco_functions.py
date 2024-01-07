@@ -2,6 +2,7 @@ import os
 import yaml
 from config import *
 import sys
+import csv
 
 ##############################################
 #  Check if Falco rules files exist          #
@@ -70,4 +71,13 @@ def writeFalcoRulesFileYaml(rules_file, list_name, yaml_string):
             sys.exit(0)
     return 
     
+##############################################
+#  Write CSV File                            #
+#      - no return value                     #
+##############################################
+def createFalcoCSVFile(input_list, filename):
+    
+    with open(filename, 'w', newline='\n') as file:
+        writer = csv.writer(file)
+        writer.writerow(input_list)
 

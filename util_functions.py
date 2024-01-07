@@ -150,6 +150,7 @@ def createYAMLArray(input_list):
     input_list_output_str = input_list_output_str + "]"
     return(input_list_output_str)
 
+
 ##############################################
 #  Write the TAXII JSON to file for debug    #
 #      - no return value                     #

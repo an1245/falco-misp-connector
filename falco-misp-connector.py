@@ -95,3 +95,9 @@ domain_list_output_str = createYAMLArray(domain_list)
 if debugyaml == True: print("- Domain YAML:" + str(falco_dns_yaml))
 print("Writing out Domain indicators to: " + falco_domain_rules_file)
 writeFalcoRulesFileYaml(falco_domain_rules_file, falco_domain_list_name, domain_list_output_str)
+
+#########################################################
+#   Dump the malware file hashes to disk                #
+#########################################################
+print("Writing out Malware Hashes to file: " + str(falco_malware_hash_file) )
+createFalcoCSVFile(file_list, falco_malware_hash_file)
