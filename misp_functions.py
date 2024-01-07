@@ -266,6 +266,6 @@ def pyMISPFileHashIndicators(shd256_dict):
 
         if len(sha256_value) > 0:
             shd256_dict[sha256_value] = [str(filename_value) ,str(size_value), str(timestamp_value)]
-            if debug: print("Storing hash:" + sha256_value + "   = ['" + shd256_dict[sha256_value][0] + "','" + shd256_dict[sha256_value][1] + "','" + shd256_dict[sha256_value][2] + "']")
+            if debugindicators: print("Storing hash:" + sha256_value + "   = ['" + shd256_dict[sha256_value][0] + "','" + shd256_dict[sha256_value][1] + "','" + shd256_dict[sha256_value][2] + "']")
         
     return  shd256_dict
