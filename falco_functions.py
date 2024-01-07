@@ -75,9 +75,13 @@ def writeFalcoRulesFileYaml(rules_file, list_name, yaml_string):
 #  Write CSV File                            #
 #      - no return value                     #
 ##############################################
-def createFalcoCSVFile(input_list, filename):
+def createFalcoCSVFile(input_dict, filename):
     
     with open(filename, 'w', newline='\n') as file:
         writer = csv.writer(file)
-        writer.writerow(input_list)
+        for hash in input_dict.keys():
+            writer.writerow([hash,str(input_dict[hash][0])])
+
+    
+        
 

@@ -2,6 +2,7 @@
 from pymisp import ExpandedPyMISP
 from config import *
 from datetime import date
+from datetime import datetime
 import dateutil.tz
 import ipaddress
 import json 
@@ -20,19 +21,23 @@ from util_functions import *
 #      - returns lists of IOCS                                    #
 ###################################################################
 
-def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
+def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list):
 
     if debug == True: print("Fetching New MISP Indicators from: "+ misp_server_url)
-    ip4_list, ip6_list, domain_list, file_list, uri_list = pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
+    ip4_list, ip6_list, domain_list, uri_list = pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list,  uri_list)
     if debug == True: print("Finished fetching new MISP Indicators from: "+ misp_server_url)
     if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list)
 
     if debug == True: print("Removing Deleted MISP Indicators from: "+ misp_server_url)
-    ip4_list, ip6_list, domain_list, file_list, uri_list = pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
+    ip4_list, ip6_list, domain_list,  uri_list = pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list,  uri_list)
     if debug == True: print("Finished removing Deleted MISP Indicators from: "+ misp_server_url)
     if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list)
 
-    return ip4_list, ip6_list, domain_list, file_list, uri_list
+
+    sha256_dict = pyMISPFileHashIndicators(sha256_dict)
+
+
+    return ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list
 
 ##############################################
 #   Build HTTP Body                          #
@@ -41,7 +46,7 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
 def pyMISPBuildHTTPBody(body):
 
     body["returnFormat"] =  "json"
-    body["type"] = ["ip-dst", "domain", "hostname", "url", "sha256"]
+    
 
     if 'misp_organisation_name' in globals():
         if len(misp_organisation_name) > 0:
@@ -70,13 +75,15 @@ def pyMISPBuildHTTPBody(body):
 #       - returns: server connection object  #
 ##############################################
 
-def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
+def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, uri_list):
    
     body = {
             "deleted": False,
-            "last": "30d"
+            "last": "30d",
+            "type": ["ip-dst", "domain", "hostname", "url"]
     }
  
+
     body = pyMISPBuildHTTPBody(body)
    
     if debug == True:
@@ -123,24 +130,23 @@ def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
             case "url":
                     if debugindicators == True: print(" - Adding URL Indicator: " + str(ioc_value))
                     itemAdd(uri_list,ioc_value)
-            case "sha256":
-                    if debugindicators == True: print(" - Adding SHA256 Indicator: " + str(ioc_value))
-                    itemAdd(file_list,ioc_value)
+
         
 
-    return ip4_list, ip6_list, domain_list, file_list, uri_list
+    return ip4_list, ip6_list, domain_list,  uri_list
 
 ##############################################
 #   Collect Remove MISP Indicators           #
 #       - returns: server connection object  #
 ##############################################
 
-def pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list):
+def pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, uri_list):
     relative_path = '/attributes/restSearch'
 
     body = {
             "deleted": True,
-            "last": "30d"
+            "last": "30d",
+            "type": ["ip-dst", "domain", "hostname", "url"]
     }
  
     body = pyMISPBuildHTTPBody(body)
@@ -184,11 +190,9 @@ def pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, file_list, ur
             case "url":
                     if debug == True: print(" - Removing URL Indicator: " + str(ioc_value))
                     itemRemove(uri_list,ioc_value)
-            case "sha256":
-                    if debug == True: print(" - Removing SHA256 Indicator: " + str(ioc_value))
-                    itemRemove(file_list,ioc_value)
 
-    return ip4_list, ip6_list, domain_list, file_list, uri_list
+
+    return ip4_list, ip6_list, domain_list, uri_list
 
 
 ##############################################
@@ -201,3 +205,67 @@ def printMISPBody(body):
             for k,v in body.items():
                 print("--             " + str(k) + "=" + str(v))
             print("-------------------------------------------------------")
+
+
+
+##############################################
+#   Collect File Hash Indicators         #
+#       - returns: server connection object  #
+##############################################
+
+def pyMISPFileHashIndicators(shd256_dict):
+   
+    body = {
+            "deleted": False,
+            "last": "30d"
+    }
+ 
+
+    body = pyMISPBuildHTTPBody(body)
+   
+    if debug == True:
+        printMISPBody(body)
+
+    relative_path = 'events/restSearch'
+    
+    if misp_is_https == True:
+            protocol = 'https'
+    else:
+            protocol = 'http'
+        
+    misp_server_url_full = protocol + '://' + misp_server_url + '/'
+
+    try:
+        misp = ExpandedPyMISP(misp_server_url_full, misp_auth_key, misp_verifycert)
+        misp_response = misp.direct_call(relative_path, body)
+    except Exception as err:
+        print(f"Can't contact MISP Server - check your URL and auth key {err=}, {type(err)=}")
+        raise
+
+ 
+    for event in misp_response:
+        sha256_value = ""
+        filename_value = ""
+        size_value = 0
+        for key, value in event['Event'].items():
+            
+            if key =="timestamp":
+                 timestamp_value = datetime.fromtimestamp(int(value))
+
+            if key =="Attribute":
+                for attribute in value:
+                    ioc_type = attribute['type']
+                    ioc_value = attribute['value']
+                    match ioc_type: 
+                        case "sha256":
+                            sha256_value = ioc_value
+                        case "filename":
+                            filename_value = ioc_value
+                        case "size-in-bytes":
+                            size_value = ioc_value
+
+        if len(sha256_value) > 0:
+            shd256_dict[sha256_value] = [str(filename_value) ,str(size_value), str(timestamp_value)]
+            if debug: print("Storing hash:" + sha256_value + "   = ['" + shd256_dict[sha256_value][0] + "','" + shd256_dict[sha256_value][1] + "','" + shd256_dict[sha256_value][2] + "']")
+        
+    return  shd256_dict
