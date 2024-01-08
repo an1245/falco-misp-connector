@@ -67,14 +67,16 @@ if debugyaml == True: print("- DNS YAML:" + str(falco_dns_yaml))
 # But we can easily expand to support IPv6, File and URI indicators 
 ip6_list = []
 file_list = []
+sha256_dict = {}
 uri_list = []
+
 
 #################################################
 # Fetch new indicators from MISP Server         #
 #################################################
 
 print("Contacting MISP Server: " + str(misp_server_url) )
-ip4_list, ip6_list, domain_list, file_list, uri_list = fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, uri_list)
+ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list = fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list)
    
 
 ########################################################
@@ -100,4 +102,4 @@ writeFalcoRulesFileYaml(falco_domain_rules_file, falco_domain_list_name, domain_
 #   Dump the malware file hashes to disk                #
 #########################################################
 print("Writing out Malware Hashes to file: " + str(falco_malware_hash_file) )
-createFalcoCSVFile(file_list, falco_malware_hash_file)
+createFalcoCSVFile(sha256_dict, falco_malware_hash_file)
