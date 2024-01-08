@@ -33,8 +33,13 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict,
     if debug == True: print("Finished removing Deleted MISP Indicators from: "+ misp_server_url)
     if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list)
 
+    if debug == True: print("Fetching New Malware Hash Indicators from: "+ misp_server_url) 
+    sha256_dict = pyMISPGetNewFileHashIndicators(sha256_dict)
+    if debug == True: print("Finished fetching Malware Hash Indicators from: "+ misp_server_url)
 
-    sha256_dict = pyMISPFileHashIndicators(sha256_dict)
+    if debug == True: print("Removing Deleted Malware Hash Indicators from: "+ misp_server_url) 
+    sha256_dict = pyMISPRemoveFileHashIndicators(sha256_dict)
+    if debug == True: print("Finished fetching Malware Hash Indicators from: "+ misp_server_url)
 
 
     return ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list
@@ -213,7 +218,7 @@ def printMISPBody(body):
 #       - returns: server connection object  #
 ##############################################
 
-def pyMISPFileHashIndicators(shd256_dict):
+def pyMISPGetNewFileHashIndicators(shd256_dict):
    
     body = {
             "deleted": False,
@@ -267,5 +272,68 @@ def pyMISPFileHashIndicators(shd256_dict):
         if len(sha256_value) > 0:
             shd256_dict[sha256_value] = [str(filename_value) ,str(size_value), str(timestamp_value)]
             if debugindicators: print("Storing hash:" + sha256_value + "   = ['" + shd256_dict[sha256_value][0] + "','" + shd256_dict[sha256_value][1] + "','" + shd256_dict[sha256_value][2] + "']")
+        
+    return  shd256_dict
+
+
+##############################################
+#   Remove File Hash Indicators              #
+#       - returns: server connection object  #
+##############################################
+
+def pyMISPRemoveFileHashIndicators(shd256_dict):
+   
+    body = {
+            "deleted": True,
+            "last": "30d"
+    }
+ 
+
+    body = pyMISPBuildHTTPBody(body)
+   
+    if debug == True:
+        printMISPBody(body)
+
+    relative_path = 'events/restSearch'
+    
+    if misp_is_https == True:
+            protocol = 'https'
+    else:
+            protocol = 'http'
+        
+    misp_server_url_full = protocol + '://' + misp_server_url + '/'
+
+    try:
+        misp = ExpandedPyMISP(misp_server_url_full, misp_auth_key, misp_verifycert)
+        misp_response = misp.direct_call(relative_path, body)
+    except Exception as err:
+        print(f"Can't contact MISP Server - check your URL and auth key {err=}, {type(err)=}")
+        raise
+
+ 
+    for event in misp_response:
+        sha256_value = ""
+        filename_value = ""
+        size_value = 0
+        for key, value in event['Event'].items():
+            
+            if key =="timestamp":
+                 timestamp_value = datetime.fromtimestamp(int(value))
+
+            if key =="Attribute":
+                for attribute in value:
+                    ioc_type = attribute['type']
+                    ioc_value = attribute['value']
+                    match ioc_type: 
+                        case "sha256":
+                            sha256_value = ioc_value
+                        case "filename":
+                            filename_value = ioc_value
+                        case "size-in-bytes":
+                            size_value = ioc_value
+
+        if len(sha256_value) > 0:
+            shd256_dict.pop([sha256_value])
+            if debugindicators: print("Removed Deleted hash:" + sha256_value  )
         
     return  shd256_dict

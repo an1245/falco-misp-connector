@@ -56,6 +56,7 @@ ip4_list = list(falco_ipv4_yaml[0]['items'])
 
 if debugyaml == True: print("- IPv4 YAML:" + str(falco_ipv4_yaml))
 
+
 # Read DNS indicator file
 if debug == True: print("Reading DNS rules file from: " + falco_domain_rules_file)
 falco_dns_yaml = returnFalcoRulesFileYaml(falco_domain_rules_file)
@@ -63,11 +64,13 @@ domain_list = list(falco_dns_yaml[0]['items'])
 
 if debugyaml == True: print("- DNS YAML:" + str(falco_dns_yaml))
 
+print("Reading Malware Hashes file from: " + falco_malware_hash_file)
+sha256_dict = readFalcoCSVFile(falco_malware_hash_file)
+
 # We only support IPv4 and DNS Indicators at the moment 
 # But we can easily expand to support IPv6, File and URI indicators 
 ip6_list = []
 file_list = []
-sha256_dict = {}
 uri_list = []
 
 
@@ -102,4 +105,4 @@ writeFalcoRulesFileYaml(falco_domain_rules_file, falco_domain_list_name, domain_
 #   Dump the malware file hashes to disk                #
 #########################################################
 print("Writing out Malware Hashes to file: " + str(falco_malware_hash_file) )
-createFalcoCSVFile(sha256_dict, falco_malware_hash_file)
+writeFalcoCSVFile(sha256_dict, falco_malware_hash_file)

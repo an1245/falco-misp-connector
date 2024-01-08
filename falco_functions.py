@@ -37,6 +37,17 @@ def checkFalcoRulesFilesExists():
         print(f"Couldn't create Falco rules file " + falco_domain_rules_file + ". Please check the directory exists. Error: {err=}, {type(err)=}")
         sys.exit(0)
 
+    
+    try:
+        if not os.path.isfile(falco_malware_hash_file):
+            if debug == True: print(" - File " + falco_malware_hash_file + " didn't exist - creating it.")
+            f = open(falco_malware_hash_file,"a")
+            f.write("")
+            f.close()
+    except Exception as err:
+        print(f"Couldn't create Falco rules file " + falco_malware_hash_file + ". Please check the directory exists. Error: {err=}, {type(err)=}")
+        sys.exit(0)
+
 ##############################################
 #  Open Falco Rules file and read as YAML    #
 #    - returns a PyYAML object               #
@@ -47,8 +58,8 @@ def returnFalcoRulesFileYaml(rules_file):
         try:
             rules_file_yaml = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
-            print(f"Couldn't read Falco rules file " + rules_file + ". Please check the file exists, is readable and is YAML formatted. Error {err=}, {type(err)=}")
-            sys.exit(0)
+            print(f"- WARNING: Couldn't read Falco rules file " + rules_file + ". Please check the file exists, is readable and is YAML formatted. Error {err=}, {type(err)=}")
+            rules_file_yaml[0] = {'items': ''}
     stream.close()
     return rules_file_yaml
 
@@ -75,7 +86,7 @@ def writeFalcoRulesFileYaml(rules_file, list_name, yaml_string):
 #  Write CSV File                            #
 #      - no return value                     #
 ##############################################
-def createFalcoCSVFile(input_dict, filename):
+def writeFalcoCSVFile(input_dict, filename):
     
     with open(filename, 'w', newline='\n') as file:
         writer = csv.writer(file)
@@ -83,5 +94,20 @@ def createFalcoCSVFile(input_dict, filename):
             writer.writerow([hash,str(input_dict[hash][0])])
 
     
-        
+##############################################
+#  Read CSV File                             #
+#      - no return value                     #
+##############################################
+def readFalcoCSVFile(filename):
+    
+    sha256_dict = {}
+    try:
+        with open(filename, newline='\n') as csvfile:
+            malwareHashCSV = csv.reader(csvfile, delimiter=',')
+            for row in malwareHashCSV:
+                sha256_dict[row[0]] = [row[1],'','']
+    except Exception as err:
+        print(f"- WARNING: Couldn't parse Falco malware hash file: " + filename + " from CSV.  Error {err=}, {type(err)=}")
+    
+    return sha256_dict
 
