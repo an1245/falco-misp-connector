@@ -37,9 +37,9 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict,
     sha256_dict = pyMISPGetNewFileHashIndicators(sha256_dict)
     if debug == True: print("Finished fetching Malware Hash Indicators from: "+ misp_server_url)
 
-    if debug == True: print("Removing Deleted Malware Hash Indicators from: "+ misp_server_url) 
-    sha256_dict = pyMISPRemoveFileHashIndicators(sha256_dict)
-    if debug == True: print("Finished fetching Malware Hash Indicators from: "+ misp_server_url)
+    #if debug == True: print("Removing Deleted Malware Hash Indicators from: "+ misp_server_url) 
+    #sha256_dict = pyMISPRemoveFileHashIndicators(sha256_dict)
+    #if debug == True: print("Finished fetching Malware Hash Indicators from: "+ misp_server_url)
 
 
     return ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list
@@ -51,6 +51,7 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict,
 def pyMISPBuildHTTPBody(body):
 
     body["returnFormat"] =  "json"
+    body["to_ids"] =  True
     
 
     if 'misp_organisation_name' in globals():
@@ -231,6 +232,9 @@ def pyMISPGetNewFileHashIndicators(shd256_dict):
     if debug == True:
         printMISPBody(body)
 
+    #########################################
+    # Grab the indicators out of the events #
+    ######################################### 
     relative_path = 'events/restSearch'
     
     if misp_is_https == True:
@@ -253,7 +257,8 @@ def pyMISPGetNewFileHashIndicators(shd256_dict):
         filename_value = ""
         size_value = 0
         for key, value in event['Event'].items():
-            
+            if key == "id":
+                 if debugindicators: print("- Processing Event ID:" + value)
             if key =="timestamp":
                  timestamp_value = datetime.fromtimestamp(int(value))
 
@@ -263,16 +268,64 @@ def pyMISPGetNewFileHashIndicators(shd256_dict):
                     ioc_value = attribute['value']
                     match ioc_type: 
                         case "sha256":
+                            if debugindicators: print("-- Processing SHA256:" + ioc_value)
                             sha256_value = ioc_value
                         case "filename":
                             filename_value = ioc_value
                         case "size-in-bytes":
                             size_value = ioc_value
+                        case _:
+                            if debugindicators: print("-- Identified Unknown Value:" + ioc_type)  
+
 
         if len(sha256_value) > 0:
             shd256_dict[sha256_value] = [str(filename_value) ,str(size_value), str(timestamp_value)]
             if debugindicators: print("Storing hash:" + sha256_value + "   = ['" + shd256_dict[sha256_value][0] + "','" + shd256_dict[sha256_value][1] + "','" + shd256_dict[sha256_value][2] + "']")
-        
+
+
+    ##########################################
+    # Grab the indicators out of the objects #
+    ########################################## 
+    relative_path = 'objects/restSearch'
+
+    try:
+        misp = ExpandedPyMISP(misp_server_url_full, misp_auth_key, misp_verifycert)
+        misp_response = misp.direct_call(relative_path, body)
+    except Exception as err:
+        print(f"Can't contact MISP Server - check your URL and auth key {err=}, {type(err)=}")
+        raise
+
+    for object in misp_response:
+        sha256_value = ""
+        filename_value = ""
+        size_value = 0
+        for key, value in object['Object'].items():
+            if key == "id":
+                 if debugindicators: print("- Processing Object ID:" + value)
+            if key =="timestamp":
+                 timestamp_value = datetime.fromtimestamp(int(value))
+
+            if key =="Attribute":
+                for attribute in value:
+                    ioc_type = attribute['type']
+                    ioc_value = attribute['value']
+                    match ioc_type: 
+                        case "sha256":
+                            if debugindicators: print("-- Processing SHA256:" + ioc_value)
+                            sha256_value = ioc_value
+                        case "filename":
+                            filename_value = ioc_value
+                        case "size-in-bytes":
+                            size_value = ioc_value
+                        case _:
+                            if debugindicators: print("-- Identified Unknown Value:" + ioc_type)  
+
+
+        if len(sha256_value) > 0:
+            shd256_dict[sha256_value] = [str(filename_value) ,str(size_value), str(timestamp_value)]
+            if debugindicators: print("Storing hash:" + sha256_value + "   = ['" + shd256_dict[sha256_value][0] + "','" + shd256_dict[sha256_value][1] + "','" + shd256_dict[sha256_value][2] + "']")
+
+
     return  shd256_dict
 
 
@@ -316,7 +369,9 @@ def pyMISPRemoveFileHashIndicators(shd256_dict):
         filename_value = ""
         size_value = 0
         for key, value in event['Event'].items():
-            
+            if key == "id":
+                 if debugindicators: print("- Processing Remove Event ID:" + value)
+
             if key =="timestamp":
                  timestamp_value = datetime.fromtimestamp(int(value))
 
@@ -326,6 +381,7 @@ def pyMISPRemoveFileHashIndicators(shd256_dict):
                     ioc_value = attribute['value']
                     match ioc_type: 
                         case "sha256":
+                            if debugindicators: print("-- Processing SHA256:" + ioc_value)
                             sha256_value = ioc_value
                         case "filename":
                             filename_value = ioc_value
@@ -335,5 +391,50 @@ def pyMISPRemoveFileHashIndicators(shd256_dict):
         if len(sha256_value) > 0:
             shd256_dict.pop([sha256_value])
             if debugindicators: print("Removed Deleted hash:" + sha256_value  )
+
+        
+
+    ##########################################
+    # Grab the indicators out of the objects #
+    ########################################## 
+    relative_path = 'objects/restSearch'
+
+    try:
+        misp = ExpandedPyMISP(misp_server_url_full, misp_auth_key, misp_verifycert)
+        misp_response = misp.direct_call(relative_path, body)
+    except Exception as err:
+        print(f"Can't contact MISP Server - check your URL and auth key {err=}, {type(err)=}")
+        raise
+
+    for object in misp_response:
+        sha256_value = ""
+        filename_value = ""
+        size_value = 0
+        for key, value in object['Object'].items():
+            if key == "id":
+                 if debugindicators: print("- Processing Remove Object ID:" + value)
+            if key =="timestamp":
+                 timestamp_value = datetime.fromtimestamp(int(value))
+
+            if key =="Attribute":
+                for attribute in value:
+                    ioc_type = attribute['type']
+                    ioc_value = attribute['value']
+                    match ioc_type: 
+                        case "sha256":
+                            if debugindicators: print("-- Removing SHA256:" + ioc_value)
+                            sha256_value = ioc_value
+                        case "filename":
+                            filename_value = ioc_value
+                        case "size-in-bytes":
+                            size_value = ioc_value
+                        case _:
+                            if debugindicators: print("-- Identified Unknown Value:" + ioc_type)  
+
+
+        if len(sha256_value) > 0:
+            shd256_dict.pop([sha256_value])
+            if debugindicators: print("Removed Deleted hash:" + sha256_value  )
+
         
     return  shd256_dict
