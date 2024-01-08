@@ -88,11 +88,13 @@ def writeFalcoRulesFileYaml(rules_file, list_name, yaml_string):
 ##############################################
 def writeFalcoCSVFile(input_dict, filename):
     
-    with open(filename, 'w', newline='\n') as file:
-        writer = csv.writer(file)
-        for hash in input_dict.keys():
-            writer.writerow([hash,str(input_dict[hash][0])])
-
+    try:
+        with open(filename, 'w', newline='\n') as file:
+            writer = csv.writer(file)
+            for hash in input_dict.keys():
+                writer.writerow([hash,str(input_dict[hash][0])])
+    except Exception as err:
+        print(f"- WARNING: Couldn't write Falco malware hash file: " + filename + ".  Error {err=}, {type(err)=}")
     
 ##############################################
 #  Read CSV File                             #
