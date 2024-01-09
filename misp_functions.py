@@ -347,6 +347,9 @@ def pyMISPRemoveFileHashIndicators(shd256_dict):
     if debug == True:
         printMISPBody(body)
 
+    #########################################
+    # Grab the indicators out of the events #
+    ######################################### 
     relative_path = 'events/restSearch'
     
     if misp_is_https == True:
