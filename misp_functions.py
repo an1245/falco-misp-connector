@@ -271,8 +271,10 @@ def pyMISPGetNewFileHashIndicators(shd256_dict):
                             if debugindicators: print("-- Processing SHA256:" + ioc_value)
                             sha256_value = ioc_value
                         case "filename":
+                            if debugindicators: print("-- Processing SHA256: " + sha256_value + " Filename :" + ioc_value)
                             filename_value = ioc_value
                         case "size-in-bytes":
+                            if debugindicators: print("-- Processing SHA256: " + sha256_value + " File Size:" + ioc_value)
                             size_value = ioc_value
                         case _:
                             if debugindicators: print("-- Identified Unknown Value:" + ioc_type)  
@@ -314,11 +316,13 @@ def pyMISPGetNewFileHashIndicators(shd256_dict):
                             if debugindicators: print("-- Processing SHA256:" + ioc_value)
                             sha256_value = ioc_value
                         case "filename":
+                            if debugindicators: print("-- Processing SHA256: " + sha256_value + " Filename :" + ioc_value)
                             filename_value = ioc_value
                         case "size-in-bytes":
+                            if debugindicators: print("-- Processing SHA256: " + sha256_value + " File Size:" + ioc_value)
                             size_value = ioc_value
                         case _:
-                            if debugindicators: print("-- Identified Unknown Value:" + ioc_type)  
+                            if debugindicators: print("-- Identified Unknown Value:" + ioc_type)   
 
 
         if len(sha256_value) > 0:
