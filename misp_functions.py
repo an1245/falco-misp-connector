@@ -82,17 +82,18 @@ def pyMISPBuildHTTPBody(body):
         if len(misp_last_seen) > 0:
             body["last_seen"] = misp_last_seen
 
-    if 'misp_published_in_last' in globals():
+    if 'misp_published' in globals():
         if len(misp_published_in_last) > 0:
             body["last"] = misp_published_in_last
-    
+        else:
+            body["last"] = '30d'
+    else:
+        body["last"] = '30d'
+
     if 'misp_date' in globals():
         if len(misp_date) > 0:
             body["date"] = misp_date
-        else:
-            body["date"] = '30d'
-    else:
-        body["date"] = '30d'
+            
     
     return body
 
