@@ -82,7 +82,7 @@ def pyMISPBuildHTTPBody(body):
         if len(misp_last_seen) > 0:
             body["last_seen"] = misp_last_seen
 
-    if 'misp_published' in globals():
+    if 'misp_published_in_last' in globals():
         if len(misp_published_in_last) > 0:
             body["last"] = misp_published_in_last
         else:
