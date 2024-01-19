@@ -82,13 +82,17 @@ def pyMISPBuildHTTPBody(body):
         if len(misp_last_seen) > 0:
             body["last_seen"] = misp_last_seen
 
-    if 'misp_published' in globals():
-        if len(misp_published) > 0:
-            body["last"] = misp_published
+    if 'misp_published_in_last' in globals():
+        if len(misp_published_in_last) > 0:
+            body["last"] = misp_published_in_last
+    
+    if 'misp_date' in globals():
+        if len(misp_date) > 0:
+            body["date"] = misp_date
         else:
-            body["last"] = '30d'
+            body["date"] = '30d'
     else:
-        body["last"] = '30d'
+        body["date"] = '30d'
     
     return body
 
@@ -103,7 +107,6 @@ def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, uri_list):
             "deleted": False,
             "type": ["ip-dst", "domain", "hostname", "url"]
     }
- 
 
     body = pyMISPBuildHTTPBody(body)
    
@@ -237,7 +240,6 @@ def pyMISPGetNewFileHashIndicators(shd256_dict):
    
     body = {
             "deleted": False,
-            "last": "30d"
     }
  
 
@@ -356,7 +358,6 @@ def pyMISPRemoveFileHashIndicators(shd256_dict):
    
     body = {
             "deleted": True,
-            "last": "30d"
     }
  
 
