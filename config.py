@@ -32,5 +32,5 @@ misp_tag_filter = ''
 misp_min_threat_level = 0
 misp_first_seen = ''                # example: 5d, 30d, 12h, 30m
 misp_last_seen = ''                 # example: 5d, 30d, 12h, 30m
-misp_published_in_last = ''         # example: 5d, 30d, 12h, 30m
-misp_date = '30d'                   # example: 5d, 30d, 12h, 30m  -- default: last 30 days
+misp_published_in_last = '30d'      # example: 5d, 30d, 12h, 30m -- default: last 30 days
+misp_date = ''                      # example: 5d, 30d, 12h, 30m
