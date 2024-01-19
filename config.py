@@ -25,12 +25,18 @@ misp_verifycert = False
 ##############################################
 #   MISP Filtering Details                   #
 ##############################################
+##############################################
+#   MISP Filtering Details                   #
+##############################################
 misp_organisation_name = ''
-misp_enforce_warning_list = True
+misp_enforce_warning_list = None
+misp_to_ids = None
 misp_category_filter = ''
 misp_tag_filter = ''
 misp_min_threat_level = 0
 misp_first_seen = ''                # example: 5d, 30d, 12h, 30m
 misp_last_seen = ''                 # example: 5d, 30d, 12h, 30m
+misp_from = ''
+misp_to = ''
 misp_published_in_last = '30d'      # example: 5d, 30d, 12h, 30m -- default: last 30 days
-misp_date = ''                      # example: 5d, 30d, 12h, 30m
+misp_date = '30d'                   # example: 5d, 30d, 12h, 30m -- default: last 30 days
