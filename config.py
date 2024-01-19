@@ -21,6 +21,7 @@ misp_server_url = '{YOU MISP SERVER - ex. osint.digitalside.it}'
 misp_is_https = True
 misp_auth_key = '{YOUR AUTH KEY}'
 misp_verifycert = False
+misp_remove_deleted = True
 
 ##############################################
 #   MISP Filtering Details                   #
