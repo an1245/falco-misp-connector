@@ -73,6 +73,22 @@ def pyMISPBuildHTTPBody(body):
     if 'misp_min_threat_level' in globals():
         if type(misp_min_threat_level) is int and misp_min_threat_level > 0 and misp_min_threat_level < 4:
             body["threat_level_id"] = misp_min_threat_level
+
+    if 'misp_first_seen' in globals():
+        if len(misp_first_seen) > 0:
+            body["first_seen"] = misp_first_seen
+
+    if 'misp_last_seen' in globals():
+        if len(misp_last_seen) > 0:
+            body["last_seen"] = misp_last_seen
+
+    if 'misp_published' in globals():
+        if len(misp_published) > 0:
+            body["last"] = misp_published
+        else:
+            body["last"] = '30d'
+    else:
+        body["last"] = '30d'
     
     return body
 
@@ -85,7 +101,6 @@ def pyMISPGetNewIndicators(ip4_list, ip6_list, domain_list, uri_list):
    
     body = {
             "deleted": False,
-            "last": "30d",
             "type": ["ip-dst", "domain", "hostname", "url"]
     }
  
@@ -151,7 +166,6 @@ def pyMISPRemoveDeletedIndicators(ip4_list, ip6_list, domain_list, uri_list):
 
     body = {
             "deleted": True,
-            "last": "30d",
             "type": ["ip-dst", "domain", "hostname", "url"]
     }
  
