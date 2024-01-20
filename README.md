@@ -6,6 +6,7 @@ The Falco MISP Connector sources indicators from MISP server and consolidates th
 There are a number of different APIs that can be used to extract the indicators out of a MISP server.  After trialling a lot of different approaches, I settled on an approach of: 
 - enumerating the indicators attached to an event using the */events/* API
 - enumerating the indicators associated with an object which is attached to an event using the */objects/* API.  
+
 This approach seemed to provide the best filtering options.  
 
 There is also code in the *Archived Code* directory to use the */attributes/* API - I chose not to use this apporach because the filtering seemed less flexible.
