@@ -11,6 +11,7 @@ The plugin requires the follow items to be configured in *config.py*
 - MISP server auth key - the API auth key from the MISP Server
 - MISP HTTP/HTTPS Setting - does the MISP server use HTTP or HTTPS
 - MISP HTTPS Verify Cert - do you want to verify the HTTPS certificate?
+- MISP Removed Deleted Indicators - do you want to remove indicators that have been soft deleted in the MISP Server?
 
 **MISP Filtering details**
 - MISP Organisation Name - retrieve indicators only from a certain organisation - '' means retrieve from all organisations
@@ -18,6 +19,12 @@ The plugin requires the follow items to be configured in *config.py*
 - MISP Category Filter - comma separated list of MISP categories to retrieve - '' means retrieve from all categories
 - MISP Tag Filter - comma separated list of MISP tags to retrieve - '' means retrieve from all tags
 - MISP Min Threat Level - minimum threat level to retrieve - use 0 to disable
+- MISP First Seen - Seen within the last x amount of time (for example 5d or 12h or 30m)
+- MISP Last Seen - Seen within the last x amount of time (for example 5d or 12h or 30m)
+- MISP From - Seen *from* this date (for example 5d or 12h or 30m)
+- MISP To - Seen *to* this date (for example 5d or 12h or 30m)
+- MISP Event Publish Date - Event was published in the last x amount of time (for example 5d or 12h or 30m)
+- MISP Date - Indicator was published in the last x amount of time (for example 5d or 12h or 30m)
 
 ## How to get started
 1. Download code from Git
@@ -61,15 +68,23 @@ misp_server_url = 'osint.digitalside.it'
 misp_is_https = True
 misp_auth_key = '{YOUR AUTH KEY}'
 misp_verifycert = False
+misp_remove_deleted = True
 
 ##############################################
 #   MISP Filtering Details                   #
 ##############################################
 misp_organisation_name = ''
-misp_enforce_warning_list = True
+misp_enforce_warning_list = None
+misp_to_ids = None
 misp_category_filter = ''
 misp_tag_filter = ''
 misp_min_threat_level = 0
+misp_first_seen = ''                # example: 5d, 30d, 12h, 30m
+misp_last_seen = ''                 # example: 5d, 30d, 12h, 30m
+misp_from = ''                      # example: 5d, 30d, 12h, 30m
+misp_to = ''                        # example: 5d, 30d, 12h, 30m
+misp_published_in_last = '30d'      # example: 5d, 30d, 12h, 30m -- default: last 30 days
+misp_date = '30d'                   # example: 5d, 30d, 12h, 30m -- default: last 30 days
 ```
 
 5. Execute the connector
