@@ -7,9 +7,7 @@ There are a number of different APIs that can be used to extract the indicators 
 - enumerating the indicators attached to an event using the */events/* API
 - enumerating the indicators associated with an object which is attached to an event using the */objects/* API.  
 
-This approach seemed to provide the best filtering options.  
-
-There is also code in the *Archived Code* directory to use the */attributes/* API - I chose not to use this apporach because the filtering seemed less flexible.
+This approach seemed to provide the best filtering options.  There is also code in the *Archived Code* directory to use the */attributes/* API - I chose not to use this apporach because the filtering seemed less flexible.
 
 ## Prerequisites
 The plugin requires the follow items to be configured in *config.py*
