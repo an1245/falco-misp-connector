@@ -14,7 +14,17 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict,
     #        if debug == True: print("Finished Fetching Deleted Indicators from: "+ misp_server_url)
 
 
-    ###########################################################################
+##############################################################################################################################
+#   My initial approach was to enumerate Events and their assoicated objects                                                 #
+#   However, during testing I found that the using date, last_seen and event_published date wasn't reliable for filtering.   #
+#   Because:                                                                                                                 #
+#    - the event_published field is relative to the local server, not when the event was generated at the source server      #
+#    - date field is used on each event and reflects when the event was created, but it's not a field for the attribute      #
+#    - the attribute uses timestamp as the date.  Time stamp is also updated when the indicator is updated - date is not     #
+#    - last_seen field isn't a mandatory field and so you can't rely on it to be there.                                      #
+##############################################################################################################################
+
+###########################################################################
 #   Get New Indicators by using Events and their associated objects       #
 #       - returns: lists with new indicators added                        #
 ###########################################################################
