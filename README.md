@@ -98,7 +98,7 @@ misp_event_published_after = ''     # example: 5d, 30d, 12h, 30m
 ```
 
 ## How can I use these lists in Falco?
-You can find some sample Falco rules in the *sample-falco-rules.yaml* file in the GitHub repo - these rules will provide basic inbound/outbound detection of traffic to/from the IPs sourced from the MISP feed.
+You can find a sample Falco rule in the *sample-falco-rules.yaml* file in the GitHub repo - this rules will provide basic outbound detection of traffic to the IPs sourced from the MISP server.
 
 Copy *sample-falco-rules.yaml* to */etc/falco/rules.d/* directory to initiate these detections.
 
