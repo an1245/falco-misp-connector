@@ -5,11 +5,3 @@
   output: Outbound Connection to Malicious IP address %fd.rip (proc.cmdline=%proc.cmdline connection=%fd.name user.name=%user.name user.loginuid=%user.loginuid container.id=%container.id image=%container.image.repository  fd.rip.name=%fd.rip.name fd.lip.name=%fd.lip.name fd.cip.name=%fd.cip.name evt.type=%evt.type evt.res=%evt.res proc.pid=%proc.pid proc.cwd=%proc.cwd proc.ppid=%proc.ppid proc.pcmdline=%proc.pcmdline proc.sid=%proc.sid proc.exepath=%proc.exepath user.uid=%user.uid user.loginname=%user.loginname group.gid=%group.gid group.name=%group.name container.name=%container.name fd.sip.name=%fd.sip.name syscall=%syscall.type)
   source: syscall
   tags: [malicious_traffic]
-
-- rule: Inbound Connection from Malicious IP address
-  desc: Detected inbound connection to malicious IP address
-  condition: evt.type in (accept, accept4, listen) and fd.rip in (malicious_ip_list)
-  priority: ALERT
-  output: Inbound connection from Malicious IP address %fd.rip (proc.cmdline=%proc.cmdline connection=%fd.name user.name=%user.name user.loginuid=%user.loginuid container.id=%container.id image=%container.image.repository  fd.rip.name=%fd.rip.name fd.lip.name=%fd.lip.name fd.cip.name=%fd.cip.name evt.type=%evt.type evt.res=%evt.res proc.pid=%proc.pid proc.cwd=%proc.cwd proc.ppid=%proc.ppid proc.pcmdline=%proc.pcmdline proc.sid=%proc.sid proc.exepath=%proc.exepath user.uid=%user.uid user.loginname=%user.loginname group.gid=%group.gid group.name=%group.name container.name=%container.name fd.sip.name=%fd.sip.name syscall=%syscall.type)
-  source: syscall
-  tags: [malicious_traffic]
