@@ -23,19 +23,6 @@ from util_functions import *
 
 def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list):
 
-    #if debug == True: print("Fetching New Indicators from: "+ misp_server_url) 
-    #ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list = pyMISPGetNewIndicatorsByEventsAndObjects(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list)
-    #if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list)
-    #if debug == True: print("Finished Fetching New Indicators from: "+ misp_server_url)
-
-
-    #if 'misp_remove_deleted' in globals():
-    #    if (misp_remove_deleted == True):
-    #        if debug == True: print("Fetching Deleted Indicators from: "+ misp_server_url) 
-    #        ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list = pyMISPGetDeletedIndicatorsByEventsAndObjects(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list)
-    #        if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list)
-    #        if debug == True: print("Finished Fetching Deleted Indicators from: "+ misp_server_url)
-
     # Set the timestamp we are looking at
     indicatorAfterTimestamp = 0
     if 'misp_timeframe' in globals():
