@@ -1,7 +1,7 @@
 # Falco MISP Connector
 
 ## Introduction
-The Falco MISP Connector sources indicators from MISP server and consolidates them into a Falco list.  Currently the connector sources destination IPv4, destination IPv6, domain name, file hash and URI based indicators from a feed, however only destination IPv4 indicators (outbound) are supported in Falco at this time.  The connector only sources destination IPv4/IPv6 (*ip-dst*) indicators at this time, but it could easily be updated to include source IPv4/IPv6 (*ip-src*) indicators if required.   
+The Falco MISP Connector sources indicators from MISP server and consolidates them into a Falco list.  Currently the connector sources destination IPv4, destination IPv6, domain name, file hash and URI based indicators from a feed, however only Falco only supports detections using IPv4/IPv6 indicators at this time.  The connector only sources destination IPv4/IPv6 (*ip-dst*) indicators at this time, but it could easily be updated to include source IPv4/IPv6 (*ip-src*) indicators if required.   
 
 ## Note Before - Indicator Filtering!
 It's not clear how many items Falco can support in a list - if you load 300k indicators into a list it might not work!  The best approach is to use the filtering options to formulate a highly targetted list of indicators.  This will give a much more manageable number of indicators and lower false positive rate.  I have provided a number of filtering options which are outlined in the *MISP Filtering details* details below.
