@@ -1,5 +1,5 @@
 python-dateutil==2.9.0.post0
 urllib3==2.2.1
-pymisp==2.4.187
+pymisp==2.4.190
 requests==2.31.0
 pyyaml==6.0.1
