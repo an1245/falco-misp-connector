@@ -104,7 +104,8 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file_lis
    
     body = {
             "deleted": False,
-            "type": ["filename", "sha256", "size-in-bytes", "ip-dst","domain", "hostname", "url"]
+            #"type": ["filename", "sha256", "size-in-bytes", "ip-dst","domain", "hostname", "url"]
+            "type": ["ip-dst"]
     }
 
     body = pyMISPBuildHTTPBody(body)

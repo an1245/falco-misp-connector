@@ -13,3 +13,4 @@ Released on 2024-06-28
 * Removed the ability to read the existing misp files and process them.  It will just overwrite them now
 * Removed the delete capability which was tied to the above read of the existing file - it was taking too long and producing inconsistent results
 * Remove misp_remove_deleted configuration option because no longer needed
+* Removed "filename", "sha256", "size-in-bytes", "domain", "hostname", "url" until they are supported
