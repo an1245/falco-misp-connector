@@ -22,12 +22,14 @@ MISP_API_KEY=$(cat ../config.py | grep misp_auth_key | awk -F'= ' '{ print $2 }'
 MISP_URL=$(cat ../config.py | grep misp_server_url | awk -F'= ' '{ print $2 }' | sed "s/'//g")
 
 echo "Getting ip-dst using curl"
-curl --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":"ip-dst"}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-ip46.out
+curl -s --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":"ip-dst"}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-ip46.out
 cat ip46.test | sort |uniq > ip46.test.sorted
+echo "Performing diff on IP address outputs"
 diff curl-ip46.out ip46.test.sorted
 
 # Removing until domains are supported
 #echo "Getting domain and hostname using curl"
-#curl --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":["domain","hostname"]}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-domain.out
+#curl -s --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":["domain","hostname"]}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-domain.out
 #cat domain.test | sort |uniq > domain.test.sorted
+echo "Performing diff on Domain outputs"
 #diff curl-domain.out domain.test.sorted
