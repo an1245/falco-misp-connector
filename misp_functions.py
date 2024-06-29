@@ -198,6 +198,7 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file_lis
 
 
 ###########################################################################
+#   NOTE: This is technical debt - I will remove it at some stage         #
 #   Get Deleted Indicators by using MISP Attributes API                   #
 #       - returns: lists with deleted indicators removed                  #
 ###########################################################################
