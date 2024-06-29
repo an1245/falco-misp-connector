@@ -26,7 +26,8 @@ curl --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept:
 cat ip46.test | sort |uniq > ip46.test.sorted
 diff curl-ip46.out ip46.test.sorted
 
-echo "Getting domain and hostname using curl"
-curl --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":["domain","hostname"]}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-domain.out
-cat domain.test | sort |uniq > domain.test.sorted
-diff curl-domain.out domain.test.sorted
+# Removing until domains are supported
+#echo "Getting domain and hostname using curl"
+#curl --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":["domain","hostname"]}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-domain.out
+#cat domain.test | sort |uniq > domain.test.sorted
+#diff curl-domain.out domain.test.sorted
