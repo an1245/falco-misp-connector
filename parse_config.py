@@ -39,10 +39,6 @@ def parseConfig():
     if not 'misp_verifycert' in globals():
         print("Configuration file parameter 'misp_verifycert' does not seem to exist")
         sys.exit(0)
-    if not 'misp_remove_deleted' in globals():
-        print("Configuration file parameter 'misp_remove_deleted' does not seem to exist")
-        
-    
     
     
     # Check Parameters are valid.
@@ -63,9 +59,6 @@ def parseConfig():
         sys.exit(0)
     if not (misp_verifycert == True or misp_verifycert == False):
         print("Configuration file parameter 'misp_verifycert' does not seem to be True or False.  misp_verifycert must equal True or False")
-        sys.exit(0)
-    if not (misp_remove_deleted == True or misp_remove_deleted == False):
-        print("Configuration parameter 'misp_remove_deleted' does not seem to be true or false.  Debug must equal True or False")
         sys.exit(0)
     if not (debug == True or debug == False):
         print("Configuration file parameter 'debug' does not seem to be a file.  Debug must equal True or False")

@@ -4,6 +4,7 @@ from config import *
 import sys
 import csv
 
+#   NOTE: This is technical debt - I will remove it at some stage         #
 ##############################################
 #  Check if Falco rules files exist          #
 #    - if they don't create the file         #
@@ -48,6 +49,7 @@ def checkFalcoRulesFilesExists():
         print(f"Couldn't create Falco rules file " + falco_malware_hash_file + ". Please check the directory exists. Error: {err=}, {type(err)=}")
         sys.exit(0)
 
+#   NOTE: This is technical debt - I will remove it at some stage         #
 ##############################################
 #  Open Falco Rules file and read as YAML    #
 #    - returns a PyYAML object               #
@@ -113,3 +115,19 @@ def readFalcoCSVFile(filename):
     
     return sha256_dict
 
+
+#################################################
+#  Write a file with Newline charaters for test #
+#    - Nothing                                  #
+#################################################
+
+def writeNewlineFile(newline_file, newline_string):
+    try:
+        with open(newline_file, "w") as stream:
+            f = open(newline_file,"w")
+            f.write(newline_string)
+        f.close()
+    except yaml.YAMLError as exc:
+            print(f"Couldn't write Newline file " + newline_file + ". Please check the file exists. Error {err=}, {type(err)=}")
+            sys.exit(0)
+    return

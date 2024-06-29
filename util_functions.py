@@ -151,6 +151,18 @@ def createYAMLArray(input_list):
     input_list_output_str = input_list_output_str + "]"
     return(input_list_output_str)
 
+##############################################
+#  Create content for file with 1 entry/line #
+#      - no return value                     #
+##############################################
+def createNLArray(input_list):
+    input_list_output_str = ""
+    for input in input_list:
+        if len(input_list_output_str) == 1:
+            input_list_output_str = input_list_output_str + input
+        else:
+            input_list_output_str = input_list_output_str + input + "\n"
+    return(input_list_output_str)
 
 ##############################################
 #  Write the TAXII JSON to file for debug    #

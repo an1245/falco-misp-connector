@@ -1,7 +1,7 @@
 # Falco MISP Connector
 
 ## Introduction
-The Falco MISP Connector sources indicators from MISP server and consolidates them into a Falco list.  Currently the connector sources destination IPv4, destination IPv6, domain name, file hash and URI based indicators from a MISP server, however Falco only supports detections using IPv4/IPv6 indicators at this time.  The connector only sources destination IPv4/IPv6 (*ip-dst*) indicators at this time, but it could easily be updated to include source IPv4/IPv6 (*ip-src*) indicators if required.   
+The Falco MISP Connector sources indicators from MISP server and consolidates them into a Falco list.  Currently the connector sources destination IPv4 and IPv6 from a MISP server, however Falco only supports detections using IPv4/IPv6 indicators at this time.  The connector only sources destination IPv4/IPv6 (*ip-dst*) indicators at this time, but it could easily be updated to include source IPv4/IPv6 (*ip-src*) indicators if required.   
 
 ## Note Before - Indicator Filtering!
 It's not clear how many items Falco can support in a list - if you load 300k indicators into a list it might not work!  The best approach is to use the filtering options to formulate a highly targetted list of indicators.  This will give a much more manageable number of indicators and lower false positive rate.  I have provided a number of filtering options which are outlined in the *MISP Filtering details* details below.
@@ -14,8 +14,6 @@ After trialling a lot of different approaches, I settled on an approach of:
 - fetching the indicators using the /attributes/ API
 - on client side - evaluate the timestamp field of every indicator and including it if it was newer than current time minus *misp_timeframe* days 
 
-I am keen on feedback on this approach if there are people in the community who think there is a better approach.
-
 ## Prerequisites
 The plugin requires the following items to be configured in *config.py*
 
@@ -24,7 +22,6 @@ The plugin requires the following items to be configured in *config.py*
 - MISP server auth key - the API auth key from the MISP Server
 - MISP HTTP/HTTPS Setting - does the MISP server use HTTP or HTTPS
 - MISP HTTPS Verify Cert - do you want to verify the HTTPS certificate?
-- MISP Removed Deleted Indicators - do you want to remove indicators that have been soft deleted in the MISP Server?
 
 **MISP Filtering details**
 - MISP Organisation Name - retrieve indicators only from a certain organisation - '' means retrieve from all organisations
@@ -34,6 +31,7 @@ The plugin requires the following items to be configured in *config.py*
 - MISP Min Threat Level - minimum threat level to retrieve - use 0 to disable
 - MISP Timeframe - how many days of indicators do you want to download - configure 0 to download all indicators
 - MISP Event Published After - only download indicators where the event was created in the last {x} days
+- MISP Exclude Decayed - Filter out all expired IOCs according to the Decay Model you have selected.
 
 ## How to get started
 1. Download code from Git
@@ -77,19 +75,19 @@ misp_server_url = '{YOU MISP SERVER - ex. osint.digitalside.it}'
 misp_is_https = True
 misp_auth_key = '{YOUR AUTH KEY}'
 misp_verifycert = False
-misp_remove_deleted = False
 
 ##############################################
 #   MISP Filtering Details                   #
 ##############################################
 misp_organisation_name = ''
 misp_enforce_warning_list = None
-misp_to_ids = None
+misp_to_ids = True
 misp_category_filter = ''
 misp_tag_filter = ''
 misp_min_threat_level = 0
-misp_timeframe = 30                 # Fetch {x} number of days worth of indicators.  Enter 0 for ALL
+misp_timeframe = 0                 # Fetch {x} number of days worth of indicators.  Enter 0 for ALL
 misp_event_published_after = ''     # example: 5d, 30d, 12h, 30m
+misp_excludeDecayed = True        
 ```
 
 5. Execute the connector

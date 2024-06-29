@@ -39,36 +39,11 @@ print("Starting MISP connector")
 if debug == True: print("Parsing Configuration file")
 parseConfig()
 
-#################################################
-# Check Falco list exists and read YAML from it #
-#################################################
-if debug == True: print("Checking for configured Falco rules files")
-checkFalcoRulesFilesExists()
-
-#################################################
-# Read indicators in from Falco Files           #
-#################################################
-
-# Read IP indicator file
-if debug == True: print("Reading IPv4 rules file from: " + falco_ipv4_rules_file)
-falco_ipv4_yaml = returnFalcoRulesFileYaml(falco_ipv4_rules_file)
-ip4_list = list(falco_ipv4_yaml[0]['items'])
-
-if debugyaml == True: print("- IPv4 YAML:" + str(falco_ipv4_yaml))
-
-
-# Read DNS indicator file
-if debug == True: print("Reading DNS rules file from: " + falco_domain_rules_file)
-falco_dns_yaml = returnFalcoRulesFileYaml(falco_domain_rules_file)
-domain_list = list(falco_dns_yaml[0]['items'])
-
-if debugyaml == True: print("- DNS YAML:" + str(falco_dns_yaml))
-
-print("Reading Malware Hashes file from: " + falco_malware_hash_file)
-sha256_dict = readFalcoCSVFile(falco_malware_hash_file)
-
 # We only support IPv4 and DNS Indicators at the moment 
 # But we can easily expand to support IPv6, File and URI indicators 
+ip4_list = []
+domain_list = []
+sha256_dict = {}
 ip6_list = []
 file_list = []
 uri_list = []
@@ -81,6 +56,24 @@ uri_list = []
 print("Contacting MISP Server: " + str(misp_server_url) )
 ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list = fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list)
    
+###########################################################
+#   Write a Newline file (used validation during testing) #
+###########################################################
+if 'debugtest' in globals() and debugtest == True:
+    # Write IPv4 and IPv6 list 
+    print("Writing IPv4/IPv6 test valiation file")
+    ip4_newline_list_output_str = createNLArray(ip4_list)
+    ip6_newline_list_output_str = createNLArray(ip6_list)
+    ip4_ip6_newline_list_output_str = ip4_newline_list_output_str +  ip6_newline_list_output_str
+    writeNewlineFile("tests/ip46.test", ip4_ip6_newline_list_output_str )
+
+    # Write Domain List
+    print("Writing Domain test valiation file")
+    domain_list_output_str = createNLArray(domain_list)
+    writeNewlineFile("tests/domain.test", domain_list_output_str)
+    
+    print("Finished writing validation files - exiting")
+    sys.exit(0)
 
 ########################################################
 #   Update the items in the Falco rules files for IP   #
@@ -95,14 +88,14 @@ writeFalcoRulesFileYaml(falco_ipv4_rules_file, falco_ipv4_list_name, ip4_list_ou
 #########################################################
 #   Update the items in the Falco rules files for DNS   #
 #########################################################
-domain_list_output_str = createYAMLArray(domain_list)
+#domain_list_output_str = createYAMLArray(domain_list)
 
-if debugyaml == True: print("- Domain YAML:" + str(falco_dns_yaml))
-print("Writing out Domain indicators to: " + falco_domain_rules_file)
-writeFalcoRulesFileYaml(falco_domain_rules_file, falco_domain_list_name, domain_list_output_str)
+#if debugyaml == True: print("- Domain YAML:" + str(falco_dns_yaml))
+#print("Writing out Domain indicators to: " + falco_domain_rules_file)
+#writeFalcoRulesFileYaml(falco_domain_rules_file, falco_domain_list_name, domain_list_output_str)
 
 #########################################################
 #   Dump the malware file hashes to disk                #
 #########################################################
-print("Writing out Malware Hashes to file: " + str(falco_malware_hash_file) )
-writeFalcoCSVFile(sha256_dict, falco_malware_hash_file)
+#print("Writing out Malware Hashes to file: " + str(falco_malware_hash_file) )
+#writeFalcoCSVFile(sha256_dict, falco_malware_hash_file)
