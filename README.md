@@ -22,7 +22,6 @@ The plugin requires the following items to be configured in *config.py*
 - MISP server auth key - the API auth key from the MISP Server
 - MISP HTTP/HTTPS Setting - does the MISP server use HTTP or HTTPS
 - MISP HTTPS Verify Cert - do you want to verify the HTTPS certificate?
-- MISP Removed Deleted Indicators - do you want to remove indicators that have been soft deleted in the MISP Server?
 
 **MISP Filtering details**
 - MISP Organisation Name - retrieve indicators only from a certain organisation - '' means retrieve from all organisations
