@@ -113,3 +113,19 @@ def readFalcoCSVFile(filename):
     
     return sha256_dict
 
+
+#################################################
+#  Write a file with Newline charaters for test #
+#    - Nothing                                  #
+#################################################
+
+def writeNewlineFile(newline_file, newline_string):
+    try:
+        with open(newline_file, "w") as stream:
+            f = open(newline_file,"w")
+            f.write(newline_string)
+        f.close()
+    except yaml.YAMLError as exc:
+            print(f"Couldn't write Newline file " + newline_file + ". Please check the file exists. Error {err=}, {type(err)=}")
+            sys.exit(0)
+    return

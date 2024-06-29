@@ -31,18 +31,11 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict,
             indicatorAfterTimestamp = (now - timedelta(days = misp_timeframe)).strftime('%s')   
 
 
-    if debug == True: print("Fetching New Indicators from Attributes for server: "+ misp_server_url + " after timestamp: " + str(indicatorAfterTimestamp)) 
+    print("Fetching New Indicators from Attributes for server: "+ misp_server_url + " after timestamp: " + str(indicatorAfterTimestamp)) 
     ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list = pyMISPGetNewIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, indicatorAfterTimestamp)
     if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list,sha256_dict)
     if debug == True: print("Finished Fetching New Indicators from Attributes for server: "+ misp_server_url)
     
-    if 'misp_remove_deleted' in globals():
-        if (misp_remove_deleted == True):
-            if debug == True: print("Fetching Deleted Indicators from Attributes for server: "+ misp_server_url + " after timestamp: " + str(indicatorAfterTimestamp)) 
-            ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list = pyMISPGetDeletedIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, indicatorAfterTimestamp)
-            if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list, sha256_dict)
-            if debug == True: print("Finished Fetching Deleted Indicators from Attributes for server: "+ misp_server_url)
-
     
     return ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list
 
@@ -81,6 +74,10 @@ def pyMISPBuildHTTPBody(body):
     if 'misp_event_published_after' in globals():
         if len(misp_event_published_after) > 0:
             body["last"] = misp_event_published_after
+
+    if 'misp_excludeDecayed' in globals():
+            if (misp_excludeDecayed == True or misp_excludeDecayed == False):
+                body["excludeDecayed"] = misp_excludeDecayed
         
     return body
 

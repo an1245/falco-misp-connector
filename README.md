@@ -34,6 +34,7 @@ The plugin requires the following items to be configured in *config.py*
 - MISP Min Threat Level - minimum threat level to retrieve - use 0 to disable
 - MISP Timeframe - how many days of indicators do you want to download - configure 0 to download all indicators
 - MISP Event Published After - only download indicators where the event was created in the last {x} days
+- MISP Exclude Decayed - Filter out all expired IOCs according to the Decay Model you have selected.
 
 ## How to get started
 1. Download code from Git
@@ -77,19 +78,19 @@ misp_server_url = '{YOU MISP SERVER - ex. osint.digitalside.it}'
 misp_is_https = True
 misp_auth_key = '{YOUR AUTH KEY}'
 misp_verifycert = False
-misp_remove_deleted = False
 
 ##############################################
 #   MISP Filtering Details                   #
 ##############################################
 misp_organisation_name = ''
 misp_enforce_warning_list = None
-misp_to_ids = None
+misp_to_ids = True
 misp_category_filter = ''
 misp_tag_filter = ''
 misp_min_threat_level = 0
-misp_timeframe = 30                 # Fetch {x} number of days worth of indicators.  Enter 0 for ALL
+misp_timeframe = 0                 # Fetch {x} number of days worth of indicators.  Enter 0 for ALL
 misp_event_published_after = ''     # example: 5d, 30d, 12h, 30m
+misp_excludeDecayed = True        
 ```
 
 5. Execute the connector
