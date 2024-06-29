@@ -88,14 +88,14 @@ writeFalcoRulesFileYaml(falco_ipv4_rules_file, falco_ipv4_list_name, ip4_list_ou
 #########################################################
 #   Update the items in the Falco rules files for DNS   #
 #########################################################
-domain_list_output_str = createYAMLArray(domain_list)
+#domain_list_output_str = createYAMLArray(domain_list)
 
-if debugyaml == True: print("- Domain YAML:" + str(falco_dns_yaml))
-print("Writing out Domain indicators to: " + falco_domain_rules_file)
-writeFalcoRulesFileYaml(falco_domain_rules_file, falco_domain_list_name, domain_list_output_str)
+#if debugyaml == True: print("- Domain YAML:" + str(falco_dns_yaml))
+#print("Writing out Domain indicators to: " + falco_domain_rules_file)
+#writeFalcoRulesFileYaml(falco_domain_rules_file, falco_domain_list_name, domain_list_output_str)
 
 #########################################################
 #   Dump the malware file hashes to disk                #
 #########################################################
-print("Writing out Malware Hashes to file: " + str(falco_malware_hash_file) )
-writeFalcoCSVFile(sha256_dict, falco_malware_hash_file)
+#print("Writing out Malware Hashes to file: " + str(falco_malware_hash_file) )
+#writeFalcoCSVFile(sha256_dict, falco_malware_hash_file)
