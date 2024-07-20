@@ -7,6 +7,7 @@ import dateutil.tz
 import ipaddress
 import json 
 import urllib3
+import ipaddress
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -21,7 +22,7 @@ from util_functions import *
 #      - returns lists of IOCS                                    #
 ###################################################################
 
-def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list):
+def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list,cidr_list):
 
     # Set the timestamp we are looking at
     indicatorAfterTimestamp = 0
@@ -32,12 +33,12 @@ def fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict,
 
 
     print("Fetching New Indicators from Attributes for server: "+ misp_server_url + " after timestamp: " + str(indicatorAfterTimestamp)) 
-    ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list = pyMISPGetNewIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, indicatorAfterTimestamp)
-    if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list,sha256_dict)
+    ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, cidr_list = pyMISPGetNewIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, cidr_list, indicatorAfterTimestamp)
+    if debug == True: printListSizes(ip4_list, ip6_list, domain_list, file_list, uri_list,cidr_list, sha256_dict)
     if debug == True: print("Finished Fetching New Indicators from Attributes for server: "+ misp_server_url)
     
     
-    return ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list
+    return ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, cidr_list
 
 ##############################################
 #   Build HTTP Body                          #
@@ -100,7 +101,7 @@ def printMISPBody(body):
 #       - returns: lists with new indicators added                        #
 ###########################################################################
             
-def pyMISPGetNewIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, indicatorAfterTimestamp):
+def pyMISPGetNewIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, cidr_list, indicatorAfterTimestamp):
    
     body = {
             "deleted": False,
@@ -157,14 +158,7 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file_lis
                     if debugindicators: print("-- Processing Timestamp Value: " + ioc_value)
                     eventDict[eventDictId]["timestamp"] = ioc_value 
                 case "ip-dst":
-                    if checkIPv4Address(ioc_value):
-                        if debugindicators == True: print(" - Adding IPv4 Indicator: " + str(ioc_value))
-                        itemAdd(ip4_list,ioc_value)
-                    elif checkIPv6Address(ioc_value):
-                        if debugindicators == True: print(" - Adding IPv6 Indicator: " + str(ioc_value))
-                        itemAdd(ip6_list,ioc_value)
-                    else: 
-                        if debug == True: print(" - Unknown Indicator Value: " + str(ioc_value))
+                    ip4_list, ip6_list, cidr_list = checkIP(ioc_value, ip4_list, ip6_list, cidr_list)
                 case "domain":
                     if checkDomainName(ioc_value):
                         if debugindicators == True: print(" - Adding Domain Indicator: " + str(ioc_value))
@@ -192,7 +186,8 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file_lis
             if debugindicators: print("Storing hash:" + sha256_value + "   = ['" + sha256_dict[sha256_value][0] + "','" + sha256_dict[sha256_value][1] + "','" + sha256_dict[sha256_value][2] + "']")
         
 
-    return ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list
+    return ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list,cidr_list
+    
 
 
 
@@ -267,3 +262,76 @@ def pyMISPGetDeletedIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file
 
 
     return ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list
+
+
+def checkIP(ip,ip4_list, ip6_list,cidr_list):
+    is_cidr=False
+
+    # Are we dealing with an IPv4 or IPv6 address?
+    ipv6=False
+    if ":" in ip: ipv6=True
+    try:
+        if debugindicators: print("Working with IP: " + ip + " - ", end="")
+
+        # Look for a slash (/) in the address
+        if "/" in ip:
+            if debugindicators: print("this is a CIDR block - ",end="")
+
+            # This is a CIDR block
+            iscidr=True
+
+            # Create an ipaddress object
+            ipobject = ipaddress.ip_network(ip)
+
+
+            # If this is a /32 (IPv4) or /128 (IPv6) prefix length then it's a host address
+            if (ipv6 == False and ipobject.prefixlen == 32) or (ipv6 == True and ipobject.prefixlen == 128):
+                ipstr = ip.split("/")[0]
+                if ipv6 == False:
+                    if checkIPv4Address(ipstr):
+                        if debugindicators == True: print("an IPv4 /32 mask - ",end="")
+                        if debugindicators == True: print("adding to ip4_list",end="")
+                        itemAdd(ip4_list,ipstr)
+                    else:
+                        print("Failed to validate IPv4 Indicator(1): " + str(ipstr),end="")
+                else:
+                    if checkIPv6Address(ipstr):
+                        if debugindicators == True: print("an IPv6 /128 mask - ",end="")
+                        if debugindicators == True: print("adding to ip6_list ",end="")
+                        itemAdd(ip6_list,ipstr)
+                    else:
+                        if debugindicators == True: print("failed to validate indicator(1)",end="")
+            # Otherwise it is a CIDR address
+            else:
+                itemAdd(cidr_list,ip)
+                if debugindicators == True: print("it is valid - ",end="")
+                if debugindicators == True: print("adding to cidr_list ",end="")
+
+        # If there isn't a / then we are dealing with an IP address
+        else:
+            if debugindicators: print("this is an IP Address - ",end="")
+            ipaddress.ip_address(ip)
+            if ipv6==True:
+                if checkIPv6Address(ip):
+                        if debugindicators == True: print("an IPv6 Address - ",end="")
+                        if debugindicators == True: print("adding to ip6_list",end="")
+                        itemAdd(ip6_list,ip)
+                else:
+                        if debugindicators == True: print("failed to validate IPv6 Indicator(2)",end="")
+            else:
+                   if checkIPv4Address(ip):
+                        if debugindicators == True: print("an IPv4 address - ",end="")
+                        if debugindicators == True: print("adding to ip4_list",end="")
+                        itemAdd(ip4_list,ip)
+                   else:
+                        if debugindicators == True: print("failed to validate IPv4 Indicator(2)",end="")
+
+    # If there is any error in that is triggered then it's invalid.
+    except ValueError:
+        if is_cidr:
+            print("it's actually an invalid CIDR - skipping",end="")
+        else:
+            print("it's actually an invalid IP - skipping",end="")
+    if debugindicators: print("")
+
+    return ip4_list, ip6_list,cidr_list

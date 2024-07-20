@@ -3,6 +3,8 @@
 ##############################################
 falco_ipv4_rules_file='/etc/falco/rules.d/misp-ipv4-indicators.yaml'
 falco_ipv4_list_name='malicious_ip_list'
+falco_cidr_rules_file='/etc/falco/rules.d/misp-ipv4-indicators.yaml'
+falco_cidr_list_name='malicious_cidr_list'
 falco_domain_rules_file='/etc/falco/rules.d/misp-domain-indicators.yaml'
 falco_domain_list_name='malicious_domain_list'
 falco_malware_hash_file='/usr/share/falco/misp-file-hash.csv'
