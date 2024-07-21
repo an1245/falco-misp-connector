@@ -228,7 +228,7 @@ def checkIP(ip,ip4_list, ip6_list,cidr_list):
                         if debugindicators == True: print("failed to validate indicator(1)",end="")
             # Otherwise it is a CIDR address
             else:
-                itemAdd(cidr_list,ip)
+                itemAdd(cidr_list,"'\"" + ip + "\"'")
                 if debugindicators == True: print("it is valid - ",end="")
                 if debugindicators == True: print("adding to cidr_list ",end="")
 
