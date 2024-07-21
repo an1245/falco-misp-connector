@@ -16,15 +16,6 @@ def parseConfig():
     if not 'falco_cidr_list_name' in globals():
         print("Configuration file parameter 'falco_cidr_list_name' does not seem to exist")
         sys.exit(0)
-    if not 'falco_domain_rules_file' in globals():
-        print("Configuration file parameter 'falco_domain_rules_file' does not seem to exist")
-        sys.exit(0)
-    if not 'falco_domain_list_name' in globals():
-        print("Configuration file parameter 'falco_domain_list_name' does not seem to exist")
-        sys.exit(0)
-    if not 'falco_malware_hash_file' in globals():
-        print("Configuration file parameter 'falco_malware_hash_file' does not seem to exist")
-        sys.exit(0)
     if not 'debug' in globals():
         print("Configuration file parameter 'debug' does not seem to exist")
         sys.exit(0)
@@ -53,12 +44,6 @@ def parseConfig():
         sys.exit(0)
     if not re.match('^(.+)\/([^\/]+)$',falco_cidr_rules_file):
         print("Configuration file parameter 'falco_cidr_rules_file' does not seem to be a file.  Please check parameter and try again")
-        sys.exit(0)
-    if not re.match('^(.+)\/([^\/]+)$', falco_domain_rules_file):
-        print("Configuration file parameter 'falco_domain_rules_file' does not seem to be a file.  Please check parameter and try again")
-        sys.exit(0)
-    if not re.match('^(.+)\/([^\/]+)$', falco_malware_hash_file):
-        print("Configuration file parameter 'falco_malware_hash_file' does not seem to be a file.  Please check parameter and try again")
         sys.exit(0)
     if not re.match('(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]',misp_server_url):
         print("Configuration file parameter 'misp_server_url' does not seem to be a file.  Please check parameter and try again")

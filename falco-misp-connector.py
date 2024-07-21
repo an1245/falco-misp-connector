@@ -94,19 +94,3 @@ cidr_list_output_str =createYAMLArray(cidr_list)
 if debugyaml == True: print("- CIDR YAML:" + str(cidr_list_output_str))
 print("Writing out CIDR indicators to: " + falco_cidr_rules_file)
 writeFalcoRulesFileYaml(falco_cidr_rules_file, falco_cidr_list_name, cidr_list_output_str)
-
-
-#########################################################
-#   Update the items in the Falco rules files for DNS   #
-#########################################################
-#domain_list_output_str = createYAMLArray(domain_list)
-
-#if debugyaml == True: print("- Domain YAML:" + str(falco_dns_yaml))
-#print("Writing out Domain indicators to: " + falco_domain_rules_file)
-#writeFalcoRulesFileYaml(falco_domain_rules_file, falco_domain_list_name, domain_list_output_str)
-
-#########################################################
-#   Dump the malware file hashes to disk                #
-#########################################################
-#print("Writing out Malware Hashes to file: " + str(falco_malware_hash_file) )
-#writeFalcoCSVFile(sha256_dict, falco_malware_hash_file)
