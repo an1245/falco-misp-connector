@@ -69,11 +69,6 @@ if 'debugtest' in globals() and debugtest == True:
     ip4_ip6_cidr_newline_list_output_str = ip4_newline_list_output_str +  ip6_newline_list_output_str + cidr_newline_list_output_str
     writeNewlineFile("tests/ip46.test", ip4_ip6_cidr_newline_list_output_str )
 
-    # Write Domain List
-    print("Writing Domain test valiation file")
-    domain_list_output_str = createNLArray(domain_list)
-    writeNewlineFile("tests/domain.test", domain_list_output_str)
-    
     print("Finished writing validation files - exiting")
     sys.exit(0)
 
