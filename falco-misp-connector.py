@@ -81,7 +81,7 @@ if 'debugtest' in globals() and debugtest == True:
     writeFalcoRulesFileYaml("tests/ipv4-rules.yaml", falco_ipv4_list_name, ip4_list_output_str)
 
     print("Writing CIDR Rules file to test folder")
-    writeFalcoRulesFileYaml("tests/cidr-rules.yaml", falco_ipv4_list_name, ip4_list_output_str)
+    writeFalcoRulesFileYaml("tests/cidr-rules.yaml", falco_ipv4_list_name, cidr_list_output_str)
 
     print("Finished writing validation files - exiting")
     sys.exit(0)
@@ -91,7 +91,7 @@ if 'debugtest' in globals() and debugtest == True:
 ########################################################
 if debugyaml == True: print("- IPv4 YAML:" + str(ip4_list_output_str))
 print("Writing out IP indicators to: " + falco_ipv4_rules_file)
-writeFalcoRulesFileYaml(falco_ipv4_rules_file, falco_ipv4_list_name, ip4_list_output_str)
+writeFalcoRulesFileYaml(falco_ipv4_rules_file, falco_cidr_list_name, ip4_list_output_str)
 
 ########################################################
 #   Update the items in the Falco rules files for CIDR #
