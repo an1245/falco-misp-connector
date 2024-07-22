@@ -1,3 +1,21 @@
+## v0.3
+
+Released on 2024-07-22
+
+### Additions
+* Added support for CIDR blocks in MISP Feeds
+* the sample-file-[ipv4|cidr]-rule file will now be appended to the output rule file so that it is easier to pass Falco validation
+* updated tests so that it will perform Falco rule validation as well
+
+### Tidy up
+* removed some old code which was redundant
+
+### Upgrades
+* Upgraded pymisp==2.4.194
+
+### Breaking Changes :warning:
+* the sample-file-[ipv4|cidr]-rule file will now be appended to the output rule file so that it is easier to pass Falco validation.  this might appear as a duplicate if you have it elsewhere already.
+
 ## v0.2
 
 Released on 2024-06-28
