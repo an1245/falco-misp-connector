@@ -47,6 +47,7 @@ sha256_dict = {}
 ip6_list = []
 file_list = []
 uri_list = []
+cidr_list = []
 
 
 #################################################
@@ -54,8 +55,31 @@ uri_list = []
 #################################################
 
 print("Contacting MISP Server: " + str(misp_server_url) )
-ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list = fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list)
-   
+ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, cidr_list = fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list,cidr_list)
+
+
+
+#################################################
+# Convert arrays to a string ready for writing  #
+#################################################
+ip4_list_output_str =createYAMLArray(ip4_list) 
+cidr_list_output_str =createYAMLArray(cidr_list) 
+
+
+###################################################################
+# Read sample-falco-[ipv4|cidr]-rule in as a string and append it #
+# This makes it easier to pass Falco validation                   #
+###################################################################
+# read: sample-falco-ipv4-rule.yaml
+with open("./sample-falco-ipv4-rule.yaml", 'r') as file:
+    ipv4_rule_content = file.read()
+ip4_list_output_str = ip4_list_output_str + "\n\n" + ipv4_rule_content
+
+with open("./sample-falco-cidr-rule.yaml", 'r') as file:
+    cidr_rule_content = file.read()
+cidr_list_output_str = cidr_list_output_str + "\n\n" + cidr_rule_content
+
+
 ###########################################################
 #   Write a Newline file (used validation during testing) #
 ###########################################################
@@ -64,38 +88,29 @@ if 'debugtest' in globals() and debugtest == True:
     print("Writing IPv4/IPv6 test valiation file")
     ip4_newline_list_output_str = createNLArray(ip4_list)
     ip6_newline_list_output_str = createNLArray(ip6_list)
-    ip4_ip6_newline_list_output_str = ip4_newline_list_output_str +  ip6_newline_list_output_str
-    writeNewlineFile("tests/ip46.test", ip4_ip6_newline_list_output_str )
+    cidr_newline_list_output_str = createNLArray(cidr_list)
+    ip4_ip6_cidr_newline_list_output_str = ip4_newline_list_output_str +  ip6_newline_list_output_str + cidr_newline_list_output_str
+    writeNewlineFile("tests/ip46.test", ip4_ip6_cidr_newline_list_output_str )
 
-    # Write Domain List
-    print("Writing Domain test valiation file")
-    domain_list_output_str = createNLArray(domain_list)
-    writeNewlineFile("tests/domain.test", domain_list_output_str)
-    
+    print("Writing IPv4 Rules file to test folder")
+    writeFalcoRulesFileYaml("tests/ipv4-rules.yaml", falco_ipv4_list_name, ip4_list_output_str)
+
+    print("Writing CIDR Rules file to test folder")
+    writeFalcoRulesFileYaml("tests/cidr-rules.yaml", falco_cidr_list_name, cidr_list_output_str)
+
     print("Finished writing validation files - exiting")
     sys.exit(0)
 
 ########################################################
 #   Update the items in the Falco rules files for IP   #
 ########################################################
-ip4_list_output_str =createYAMLArray(ip4_list) 
-
-if debugyaml == True: print("- IPv4 YAML:" + str(falco_ipv4_yaml))
+if debugyaml == True: print("- IPv4 YAML:" + str(ip4_list_output_str))
 print("Writing out IP indicators to: " + falco_ipv4_rules_file)
 writeFalcoRulesFileYaml(falco_ipv4_rules_file, falco_ipv4_list_name, ip4_list_output_str)
 
-
-#########################################################
-#   Update the items in the Falco rules files for DNS   #
-#########################################################
-#domain_list_output_str = createYAMLArray(domain_list)
-
-#if debugyaml == True: print("- Domain YAML:" + str(falco_dns_yaml))
-#print("Writing out Domain indicators to: " + falco_domain_rules_file)
-#writeFalcoRulesFileYaml(falco_domain_rules_file, falco_domain_list_name, domain_list_output_str)
-
-#########################################################
-#   Dump the malware file hashes to disk                #
-#########################################################
-#print("Writing out Malware Hashes to file: " + str(falco_malware_hash_file) )
-#writeFalcoCSVFile(sha256_dict, falco_malware_hash_file)
+########################################################
+#   Update the items in the Falco rules files for CIDR #
+########################################################
+if debugyaml == True: print("- CIDR YAML:" + str(cidr_list_output_str))
+print("Writing out CIDR indicators to: " + falco_cidr_rules_file)
+writeFalcoRulesFileYaml(falco_cidr_rules_file, falco_cidr_list_name, cidr_list_output_str)
