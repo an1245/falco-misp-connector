@@ -56,7 +56,15 @@ cidr_list = []
 
 print("Contacting MISP Server: " + str(misp_server_url) )
 ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, cidr_list = fetchMISPIndicators(ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list,cidr_list)
-   
+
+
+
+#################################################
+# Convert arrays to a string ready for writing  #
+#################################################
+ip4_list_output_str =createYAMLArray(ip4_list) 
+cidr_list_output_str =createYAMLArray(cidr_list) 
+
 ###########################################################
 #   Write a Newline file (used validation during testing) #
 ###########################################################
@@ -69,14 +77,18 @@ if 'debugtest' in globals() and debugtest == True:
     ip4_ip6_cidr_newline_list_output_str = ip4_newline_list_output_str +  ip6_newline_list_output_str + cidr_newline_list_output_str
     writeNewlineFile("tests/ip46.test", ip4_ip6_cidr_newline_list_output_str )
 
+    print("Writing IPv4 Rules file to test folder")
+    writeFalcoRulesFileYaml("tests/ipv4-rules.yaml", falco_ipv4_list_name, ip4_list_output_str)
+
+    print("Writing CIDR Rules file to test folder")
+    writeFalcoRulesFileYaml("tests/cidr-rules.yaml", falco_ipv4_list_name, ip4_list_output_str)
+
     print("Finished writing validation files - exiting")
     sys.exit(0)
 
 ########################################################
 #   Update the items in the Falco rules files for IP   #
 ########################################################
-ip4_list_output_str =createYAMLArray(ip4_list) 
-
 if debugyaml == True: print("- IPv4 YAML:" + str(ip4_list_output_str))
 print("Writing out IP indicators to: " + falco_ipv4_rules_file)
 writeFalcoRulesFileYaml(falco_ipv4_rules_file, falco_ipv4_list_name, ip4_list_output_str)
@@ -84,8 +96,6 @@ writeFalcoRulesFileYaml(falco_ipv4_rules_file, falco_ipv4_list_name, ip4_list_ou
 ########################################################
 #   Update the items in the Falco rules files for CIDR #
 ########################################################
-cidr_list_output_str =createYAMLArray(cidr_list) 
-
 if debugyaml == True: print("- CIDR YAML:" + str(cidr_list_output_str))
 print("Writing out CIDR indicators to: " + falco_cidr_rules_file)
 writeFalcoRulesFileYaml(falco_cidr_rules_file, falco_cidr_list_name, cidr_list_output_str)

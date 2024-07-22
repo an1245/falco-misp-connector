@@ -22,3 +22,11 @@ cat ip46.test | sort |uniq > ip46.test.sorted
 echo "Performing diff on IP address outputs"
 diff curl-ip46.out ip46.test.sorted
 
+echo "Validating Falco IPv4 rules files"
+falco -V ./ipv4-rules.yaml 
+
+echo "Validating Falco CIDR rules files"
+falco -V ./cidr-rules.yaml
+
+
+
