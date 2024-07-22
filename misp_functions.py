@@ -216,19 +216,19 @@ def checkIP(ip,ip4_list, ip6_list,cidr_list):
                     if checkIPv4Address(ipstr):
                         if debugindicators == True: print("an IPv4 /32 mask - ",end="")
                         if debugindicators == True: print("adding to ip4_list",end="")
-                        itemAdd(ip4_list,"'\"" + ipstr + "\"'")
+                        itemAdd(ip4_list, ipstr)
                     else:
                         print("Failed to validate IPv4 Indicator(1): " + str(ipstr),end="")
                 else:
                     if checkIPv6Address(ipstr):
                         if debugindicators == True: print("an IPv6 /128 mask - ",end="")
                         if debugindicators == True: print("adding to ip6_list ",end="")
-                        itemAdd(ip6_list,"'\"" + ipstr + "\"'")
+                        itemAdd(ip6_list,ipstr)
                     else:
                         if debugindicators == True: print("failed to validate indicator(1)",end="")
             # Otherwise it is a CIDR address
             else:
-                itemAdd(cidr_list,"'\"" + ip + "\"'")
+                itemAdd(cidr_list, ip )
                 if debugindicators == True: print("it is valid - ",end="")
                 if debugindicators == True: print("adding to cidr_list ",end="")
 
@@ -240,14 +240,14 @@ def checkIP(ip,ip4_list, ip6_list,cidr_list):
                 if checkIPv6Address(ip):
                         if debugindicators == True: print("an IPv6 Address - ",end="")
                         if debugindicators == True: print("adding to ip6_list",end="")
-                        itemAdd(ip6_list,"'\"" + ip + "\"'")
+                        itemAdd(ip6_list,ip)
                 else:
                         if debugindicators == True: print("failed to validate IPv6 Indicator(2)",end="")
             else:
                    if checkIPv4Address(ip):
                         if debugindicators == True: print("an IPv4 address - ",end="")
                         if debugindicators == True: print("adding to ip4_list",end="")
-                        itemAdd(ip4_list,"'\"" + ip + "\"'")
+                        itemAdd(ip4_list, ip)
                    else:
                         if debugindicators == True: print("failed to validate IPv4 Indicator(2)",end="")
 
