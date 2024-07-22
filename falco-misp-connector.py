@@ -65,6 +65,21 @@ ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, cidr_list = f
 ip4_list_output_str =createYAMLArray(ip4_list) 
 cidr_list_output_str =createYAMLArray(cidr_list) 
 
+
+###################################################################
+# Read sample-falco-[ipv4|cidr]-rule in as a string and append it #
+# This makes it easier to pass Falco validation                   #
+###################################################################
+# read: sample-falco-ipv4-rule.yaml
+with open("./sample-falco-ipv4-rule.yaml", 'r') as file:
+    ipv4_rule_content = file.read()
+ip4_list_output_str = ip4_list_output_str + "\n\n" + ipv4_rule_content
+
+with open("./sample-falco-cidr-rule.yaml", 'r') as file:
+    cidr_rule_content = file.read()
+cidr_list_output_str = cidr_list_output_str + "\n\n" + cidr_rule_content
+
+
 ###########################################################
 #   Write a Newline file (used validation during testing) #
 ###########################################################
