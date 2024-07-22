@@ -1,7 +1,7 @@
 # Falco MISP Connector
 
 ## Introduction
-The Falco MISP Connector sources indicators from MISP server and consolidates them into a Falco list.  Currently the connector sources destination IPv4 and IPv6 from a MISP server, however Falco only supports detections using IPv4/IPv6 indicators at this time.  The connector only sources destination IPv4/IPv6 (*ip-dst*) indicators at this time, but it could easily be updated to include source IPv4/IPv6 (*ip-src*) indicators if required.   
+The Falco MISP Connector sources indicators from MISP server and consolidates them into a Falco list.  Currently the connector sources destination IPv4 and IPv6 from a MISP server, however Falco only supports detections using IPv4/IPv6 indicators at this time.  The connector only sources destination IPv4/IPv6 (*ip-dst*) indicators at this time, but it could easily be updated to include source IPv4/IPv6 (*ip-src*) indicators if required.   The connector also supports CIDR blocks and will create a separate rules file for them.
 
 ## Note Before - Indicator Filtering!
 It's not clear how many items Falco can support in a list - if you load 300k indicators into a list it might not work!  The best approach is to use the filtering options to formulate a highly targetted list of indicators.  This will give a much more manageable number of indicators and lower false positive rate.  I have provided a number of filtering options which are outlined in the *MISP Filtering details* details below.
@@ -95,9 +95,8 @@ misp_excludeDecayed = True
 ```
 
 ## How can I use these lists in Falco?
-You can find a sample Falco rule in the *sample-falco-rules.yaml* file in the GitHub repo - this rules will provide basic outbound detection of traffic to the IPs sourced from the MISP server.
-
-Copy *sample-falco-rules.yaml* to */etc/falco/rules.d/* directory to initiate these detections.
+The script will automatically append the two sample rules files in the main directory (sample-falco-cidr-rule.yaml and sample-falco-ipv4-rule.yaml) to the end of the two generated rules files.
+You should be able to copy the two generated rules files (IPv4 and CIDR) into /etc/falco/rules.d/ directory and restart Falco.
 
 ## Debugging
 There are three configurations to help you debug the connector:
