@@ -6,6 +6,7 @@ Released on 2024-07-22
 * Added support for CIDR blocks in MISP Feeds
 * the sample-file-[ipv4|cidr]-rule file will now be appended to the output rule file so that it is easier to pass Falco validation
 * updated tests so that it will perform Falco rule validation as well
+* output the IPv6 indicators to file!  finally!
 
 ### Tidy up
 * removed some old code which was redundant
