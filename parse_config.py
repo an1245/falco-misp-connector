@@ -10,6 +10,12 @@ def parseConfig():
     if not 'falco_ipv4_list_name' in globals():
         print("Configuration file parameter 'falco_ipv4_list_name' does not seem to exist")
         sys.exit(0)
+    if not 'falco_ipv6_rules_file' in globals():
+        print("Configuration file parameter 'falco_ipv6_rules_file' does not seem to exist")
+        sys.exit(0)
+    if not 'falco_ipv6_list_name' in globals():
+        print("Configuration file parameter 'falco_ipv6_list_name' does not seem to exist")
+        sys.exit(0)
     if not 'falco_cidr_rules_file' in globals():
         print("Configuration file parameter 'falco_cidr_rules_file' does not seem to exist")
         sys.exit(0)
@@ -40,6 +46,9 @@ def parseConfig():
     
     # Check Parameters are valid.
     if not re.match('^(.+)\/([^\/]+)$',falco_ipv4_rules_file):
+        print("Configuration file parameter 'falco_ipv4_rules_file' does not seem to be a file.  Please check parameter and try again")
+        sys.exit(0)
+    if not re.match('^(.+)\/([^\/]+)$',falco_ipv6_rules_file):
         print("Configuration file parameter 'falco_ipv4_rules_file' does not seem to be a file.  Please check parameter and try again")
         sys.exit(0)
     if not re.match('^(.+)\/([^\/]+)$',falco_cidr_rules_file):

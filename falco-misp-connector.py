@@ -63,6 +63,7 @@ ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, cidr_list = f
 # Convert arrays to a string ready for writing  #
 #################################################
 ip4_list_output_str =createYAMLArray(ip4_list) 
+ip6_list_output_str =createYAMLArray(ip6_list) 
 cidr_list_output_str =createYAMLArray(cidr_list) 
 
 
@@ -74,6 +75,11 @@ cidr_list_output_str =createYAMLArray(cidr_list)
 with open("./sample-falco-ipv4-rule.yaml", 'r') as file:
     ipv4_rule_content = file.read()
 ip4_list_output_str = ip4_list_output_str + "\n\n" + ipv4_rule_content
+
+# read: sample-falco-ipv6-rule.yaml
+with open("./sample-falco-ipv6-rule.yaml", 'r') as file:
+    ipv6_rule_content = file.read()
+ip6_list_output_str = ip6_list_output_str + "\n\n" + ipv6_rule_content
 
 with open("./sample-falco-cidr-rule.yaml", 'r') as file:
     cidr_rule_content = file.read()
@@ -95,6 +101,9 @@ if 'debugtest' in globals() and debugtest == True:
     print("Writing IPv4 Rules file to test folder")
     writeFalcoRulesFileYaml("tests/ipv4-rules.yaml", falco_ipv4_list_name, ip4_list_output_str)
 
+    print("Writing IPv6 Rules file to test folder")
+    writeFalcoRulesFileYaml("tests/ipv6-rules.yaml", falco_ipv6_list_name, ip6_list_output_str)
+
     print("Writing CIDR Rules file to test folder")
     writeFalcoRulesFileYaml("tests/cidr-rules.yaml", falco_cidr_list_name, cidr_list_output_str)
 
@@ -107,6 +116,13 @@ if 'debugtest' in globals() and debugtest == True:
 if debugyaml == True: print("- IPv4 YAML:" + str(ip4_list_output_str))
 print("Writing out IP indicators to: " + falco_ipv4_rules_file)
 writeFalcoRulesFileYaml(falco_ipv4_rules_file, falco_ipv4_list_name, ip4_list_output_str)
+
+########################################################
+#   Update the items in the Falco rules files for IP   #
+########################################################
+if debugyaml == True: print("- IPv6 YAML:" + str(ip6_list_output_str))
+print("Writing out IP indicators to: " + falco_ipv6_rules_file)
+writeFalcoRulesFileYaml(falco_ipv6_rules_file, falco_ipv6_list_name, ip6_list_output_str)
 
 ########################################################
 #   Update the items in the Falco rules files for CIDR #
