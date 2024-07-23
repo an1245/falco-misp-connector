@@ -63,9 +63,13 @@ ip4_list, ip6_list, domain_list, file_list, sha256_dict, uri_list, cidr_list = f
 # Convert arrays to a string ready for writing  #
 #################################################
 ip4_list_output_str =createYAMLArray(ip4_list) 
-ip6_list_output_str =createYAMLArray(ip6_list) 
 cidr_list_output_str =createYAMLArray(cidr_list) 
 
+#  The IPV6 addresses need speech marks around them
+ip6_list_output_str =createYAMLArray(ip6_list) 
+ip6_list_output_str = ip6_list_output_str.replace("[", "[\"")
+ip6_list_output_str = ip6_list_output_str.replace("]", "\"]")
+ip6_list_output_str = ip6_list_output_str.replace(",", "\",\"")
 
 ###################################################################
 # Read sample-falco-[ipv4|cidr]-rule in as a string and append it #
