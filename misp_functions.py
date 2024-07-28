@@ -1,5 +1,5 @@
 # MISP
-from pymisp import ExpandedPyMISP
+from pymisp import PyMISP
 from config import *
 from datetime import date
 from datetime import datetime, timedelta
@@ -124,7 +124,7 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_list, ip6_list, domain_list, file_lis
     misp_server_url_full = protocol + '://' + misp_server_url + '/'
 
     try:
-        misp = ExpandedPyMISP(misp_server_url_full, misp_auth_key, misp_verifycert)
+        misp = PyMISP(misp_server_url_full, misp_auth_key, misp_verifycert)
         misp_response = misp.direct_call(relative_path, body)
     except Exception as err:
         print(f"Can't contact MISP Server - check your URL and auth key {err=}, {type(err)=}")
