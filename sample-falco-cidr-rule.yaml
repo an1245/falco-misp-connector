@@ -1,6 +1,6 @@
 - rule: Outbound Connection to IP in Malicious CIDR block
   desc: Detect traffic to IP in Malicious CIDR block
-  condition: evt.type = connect and evt.dir =< and fd.snet in (malicious_cidr_list) and not fd.snet in (misp_cidr_exception_list) and not fd.rip in (misp_cidr_ipv4_exception_list) and not fd.rip in (misp_cidr_ipv6_exception_list)
+  condition: outbound and fd.snet in (malicious_cidr_list) and not fd.snet in (misp_cidr_exception_list) and not fd.rip in (misp_cidr_ipv4_exception_list) and not fd.rip in (misp_cidr_ipv6_exception_list)
   priority: ALERT
   output: Outbound Connection to IP in Malicious CIDR block  %fd.rip (proc.cmdline=%proc.cmdline connection=%fd.name user.name=%user.name user.loginuid=%user.loginuid container.id=%container.id image=%container.image.repository  fd.rip.name=%fd.rip.name fd.lip.name=%fd.lip.name fd.cip.name=%fd.cip.name evt.type=%evt.type evt.res=%evt.res proc.pid=%proc.pid proc.cwd=%proc.cwd proc.ppid=%proc.ppid proc.pcmdline=%proc.pcmdline proc.sid=%proc.sid proc.exepath=%proc.exepath user.uid=%user.uid user.loginname=%user.loginname group.gid=%group.gid group.name=%group.name container.name=%container.name fd.sip.name=%fd.sip.name syscall=%syscall.type)
   source: syscall
