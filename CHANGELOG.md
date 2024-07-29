@@ -7,6 +7,7 @@ Release on
 
 ### Changes
 * Changed ExpandedPyMISP to PyMISP because ExpandedPyMISP is deprecated
+* Changed the sample rule conditions to use the outbound macro so it catches UDP
 
 ### Upgrades
 * Upgraded pymisp==2.4.195
