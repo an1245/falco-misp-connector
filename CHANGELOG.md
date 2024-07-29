@@ -1,3 +1,13 @@
+## v0.4
+
+Release on 
+
+### Changes
+* Changed ExpandedPyMISP to PyMISP because ExpandedPyMISP is deprecated
+
+### Upgrades
+* Upgraded pymisp==2.4.195
+
 ## v0.3
 
 Released on 2024-07-22
