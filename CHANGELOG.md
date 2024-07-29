@@ -2,6 +2,9 @@
 
 Release on 
 
+### Additions
+* Added exception list to sample-falco-ipv4-rule.yaml, sample-falco-ipv6-rule.yaml and sample-falco-cidr-rule.yaml
+
 ### Changes
 * Changed ExpandedPyMISP to PyMISP because ExpandedPyMISP is deprecated
 
