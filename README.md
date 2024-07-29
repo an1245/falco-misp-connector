@@ -97,7 +97,7 @@ misp_excludeDecayed = True
 ```
 
 ## How can I use these lists in Falco?
-The script will automatically append the three sample rules files in the main directory (sample-falco-cidr-rule.yaml, sample-falco-ipv4-rule.yaml and sample-falco-ipv6-rule.yaml) to the end of the three Falco rules files that the connector generates - in these sample rules files, you will find lists to create exceptions.  The three rules files that the connector generates (IPv4,IPv6 and CIDR) can then be copied into /etc/falco/rules.d/ directory and Falco restarted. 
+The script will automatically append the three sample rules files in the main directory (sample-falco-cidr-rule.yaml, sample-falco-ipv4-rule.yaml and sample-falco-ipv6-rule.yaml) to the end of the three Falco rules files that the connector generates - in these sample rules file you will find lists to create exceptions.  The three rules files that the connector generates (IPv4,IPv6 and CIDR) can then be copied into /etc/falco/rules.d/ directory and Falco restarted. 
 
 ## Debugging
 There are three configurations to help you debug the connector:
