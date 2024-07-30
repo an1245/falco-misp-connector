@@ -22,14 +22,12 @@ cat ip46.test | sort |uniq > ip46.test.sorted
 echo "Performing diff on IP address outputs"
 diff curl-ip46.out ip46.test.sorted
 
-echo "Validating Falco IPv4 rules files"
-falco -V ./ipv4-rules.yaml 
-
-echo "Validating Falco IPv6 rules files"
-falco -V ./ipv6-rules.yaml 
-
-echo "Validating Falco CIDR rules files"
-falco -V ./cidr-rules.yaml
-
-
-
+echo "Validating Falco rules files"
+timeout --preserve-status 5s falco -c /etc/falco/falco.yaml -r /etc/falco/falco_rules.yaml -r ./ipv4-rules.yaml -r ./ipv6-rules.yaml -r ./cidr-rules.yaml
+status=$?
+if [ $status -eq 0 ]; then
+      echo "Validation Successful"
+else
+      echo "Validation Failed!"
+      exit 1
+fi
