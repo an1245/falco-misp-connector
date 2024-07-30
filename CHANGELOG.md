@@ -1,6 +1,6 @@
 ## v0.4
 
-Release on 2024-07-29
+Released on 2024-07-29
 
 ### Additions
 * Added exception list to sample-falco-ipv4-rule.yaml, sample-falco-ipv6-rule.yaml and sample-falco-cidr-rule.yaml
