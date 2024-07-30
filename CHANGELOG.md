@@ -1,6 +1,6 @@
 ## v0.4
 
-Release on 
+Release on 2024-07-29
 
 ### Additions
 * Added exception list to sample-falco-ipv4-rule.yaml, sample-falco-ipv6-rule.yaml and sample-falco-cidr-rule.yaml
@@ -8,6 +8,7 @@ Release on
 ### Changes
 * Changed ExpandedPyMISP to PyMISP because ExpandedPyMISP is deprecated
 * Changed the sample rule conditions to use the outbound macro so it catches UDP
+* Updated tests to cater for outbound macro
 
 ### Upgrades
 * Upgraded pymisp==2.4.195
