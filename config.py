@@ -1,12 +1,12 @@
 ##############################################
 #   Falco configuration details              #
 ##############################################
-falco_ipv4_rules_file='/etc/falco/rules.d/misp-ipv4-indicators.yaml'
-falco_ipv4_list_name='malicious_ip_list'
-falco_ipv6_rules_file='/etc/falco/rules.d/misp-ipv6-indicators.yaml'
-falco_ipv6_list_name='malicious_ipv6_list'
-falco_cidr_rules_file='/etc/falco/rules.d/misp-cidr-indicators.yaml'
-falco_cidr_list_name='malicious_cidr_list'
+falco_ipv4_outbound_rules_file='/etc/falco/rules.d/misp-ipv4-indicators.yaml'
+falco_ipv4_outbound_list_name='malicious_ip_list'
+falco_ipv6_outbound_rules_file='/etc/falco/rules.d/misp-ipv6-indicators.yaml'
+falco_ipv6_outbound_list_name='malicious_ipv6_list'
+falco_cidr_outbound_rules_file='/etc/falco/rules.d/misp-cidr-indicators.yaml'
+falco_cidr_outbound_list_name='malicious_cidr_list'
 
 
 ##############################################

@@ -1,3 +1,21 @@
+## v0.5
+
+Released on 2024-08
+
+### Additions
+* Added exception list to sample-falco-ipv4-rule.yaml, sample-falco-ipv6-rule.yaml and sample-falco-cidr-rule.yaml
+
+### Changes
+* refactored ip4_list, ip6_list and cidr_list into ip4_outbound_list, ip6_outbound_list and cidr_outbound_list
+* changed sample-falco-[ipv4|ipv6|cidr]-rule.yaml file names to sample-falco-[ipv4|ipv6|cidr]-outbound-rule.yaml
+* changed variable names in the config file to relect outbound.
+* updated parse_config to check for new names
+
+### Upgrades
+
+
+
+
 ## v0.4
 
 Released on 2024-07-29
