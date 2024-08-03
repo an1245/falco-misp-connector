@@ -32,7 +32,7 @@ echo "Performing diff on IP address outputs"
 diff curl-ip46-inbound.out ip46-inbound.test.sorted
 
 echo "Validating Falco outbound rules files"
-timeout --preserve-status 5s falco -c /etc/falco/falco.yaml -r /etc/falco/falco_rules.yaml -r ./ipv4-outbound-rules.yaml -r ./ipv6-outbound-rules.yaml -r ./cidr-outbound-rules.yaml -r ./ipv4-inbound-rules.yaml -r ./ipv6-inbound-rules.yaml -r ./cidr-inbound-rules.yaml
+timeout --preserve-status 5s falco -c /etc/falco/falco.yaml -r /etc/falco/falco_rules.yaml -r /etc/falco/falco-sandbox_rules.yaml -r ./ipv4-outbound-rules.yaml -r ./ipv6-outbound-rules.yaml -r ./cidr-outbound-rules.yaml -r ./ipv4-inbound-rules.yaml -r ./ipv6-inbound-rules.yaml -r ./cidr-inbound-rules.yaml
 status=$?
 if [ $status -eq 0 ]; then
       echo "Validation Successful"
