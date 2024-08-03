@@ -4,6 +4,10 @@ Released on 2024-08
 
 ### Additions
 * Added exception list to sample-falco-ipv4-rule.yaml, sample-falco-ipv6-rule.yaml and sample-falco-cidr-rule.yaml
+* Added rules files sample-falco-ipv4-inbound-rule.yaml. sample-falco-ipv6-inbound-rule.yaml, sample-falco-cidr-inbound-rule.yaml
+* Added inbound rules in config.py for IPv4, Ipv6 and CIDR 
+* Added configuration parsing for inbound rules
+* Added MISP download ip-src
 
 ### Changes
 * refactored ip4_list, ip6_list and cidr_list into ip4_outbound_list, ip6_outbound_list and cidr_outbound_list
