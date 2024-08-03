@@ -2,6 +2,10 @@ import re
 from config import *
 import sys
 
+###################################################################################
+#   Checks whether all the appropiate parameters exist and are valid in config.py #
+###################################################################################
+
 def parseConfig():
     # Check Parameters Exist
     if not 'falco_ipv4_outbound_rules_file' in globals():

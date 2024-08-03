@@ -87,37 +87,39 @@ ip6_inbound_list_output_str = ip6_inbound_list_output_str.replace("]", "\"]")
 ip6_inbound_list_output_str = ip6_inbound_list_output_str.replace(",", "\",\"")
 
 
-################################################################################################
-# Read sample-falco-[ipv4|cidr]-[outbound|inbound]-rule.yaml file in as a string and append it #
-# This makes it easier to pass Falco validation                                                #
-################################################################################################
+######################################################################################################
+# Read rules/sample-falco-[ipv4|cidr]-[outbound|inbound]-rule.yaml file in as a string and append it #
+# This makes it easier to pass Falco validation                                                      #
+######################################################################################################
 
 # Outbound Rules
-# read: sample-falco-ipv4-rule.yaml
+# read: sample-falco-ipv4-outbound-rule.yaml
 with open("./rules/sample-falco-ipv4-outbound-rule.yaml", 'r') as file:
     ipv4_rule_content = file.read()
 ip4_outbound_list_output_str = ip4_outbound_list_output_str + "\n\n" + ipv4_rule_content
 
-# read: sample-falco-ipv6-rule.yaml
+# read: sample-falco-ipv6-outbound-rule.yaml
 with open("./rules/sample-falco-ipv6-outbound-rule.yaml", 'r') as file:
     ipv6_rule_content = file.read()
 ip6_outbound_list_output_str = ip6_outbound_list_output_str + "\n\n" + ipv6_rule_content
 
+# read: sample-falco-cidr-outbound-rule.yaml
 with open("./rules/sample-falco-cidr-outbound-rule.yaml", 'r') as file:
     cidr_rule_content = file.read()
 cidr_outbound_list_output_str = cidr_outbound_list_output_str + "\n\n" + cidr_rule_content
 
 # Inbound Rules
-# read: sample-falco-ipv4-rule.yaml
+# read: sample-falco-ipv4-inbound-rule.yaml
 with open("./rules/sample-falco-ipv4-inbound-rule.yaml", 'r') as file:
     ipv4_rule_content = file.read()
 ip4_inbound_list_output_str = ip4_inbound_list_output_str + "\n\n" + ipv4_rule_content
 
-# read: sample-falco-ipv6-rule.yaml
+# read: sample-falco-ipv6-inbound-rule.yaml
 with open("./rules/sample-falco-ipv6-inbound-rule.yaml", 'r') as file:
     ipv6_rule_content = file.read()
 ip6_inbound_list_output_str = ip6_inbound_list_output_str + "\n\n" + ipv6_rule_content
 
+# read: sample-falco-cidr-inbound-rule.yaml
 with open("./rules/sample-falco-cidr-inbound-rule.yaml", 'r') as file:
     cidr_rule_content = file.read()
 cidr_inbound_list_output_str = cidr_inbound_list_output_str + "\n\n" + cidr_rule_content

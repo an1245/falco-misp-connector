@@ -42,6 +42,6 @@ misp_to_ids = True
 misp_category_filter = ''
 misp_tag_filter = ''
 misp_min_threat_level = 0
-misp_timeframe = 0                   # Fetch {x} number of days worth of indicators.  Enter 0 for ALL
+misp_timeframe = 0                    # Fetch {x} number of days worth of indicators.  Enter 0 for ALL
 misp_event_published_after = ''       # Fetch only indicators whose events were published in the last - example: 5d, 30d, 12h, 30m
 misp_excludeDecayed = True
