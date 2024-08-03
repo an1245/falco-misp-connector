@@ -15,7 +15,7 @@ After trialling a lot of different approaches, I settled on an approach of:
 - on client side - evaluate the timestamp field of every indicator and including it if it was newer than current time minus *misp_timeframe* days 
 
 ## Prerequisites
-The plugin requires the inbound macro which is currently in the Falco sandbox rules.  NOTE: instrumenting the system calls in the inbound macro (system calls: accept,accept4,listen,recvfrom,recvmsg) may cause Falco to drop system calls on heavily loaded systems - watch for this in falco.log.
+The plugin requires the ***inbound*** macro which is currently in the Falco sandbox rules.  ***NOTE:*** instrumenting the system calls in the inbound macro (accept,accept4,listen,recvfrom,recvmsg) may cause Falco to drop system calls on heavily loaded systems - watch for this in falco.log.
 
 The plugin requires the following items to be configured in *config.py*
 
