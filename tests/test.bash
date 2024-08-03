@@ -7,8 +7,13 @@ if [ "$DEBUGTRUE" != "True" ]; then
 fi
  
 
-if ! [ -f ./ip46.test ]; then
-  echo "ip46.test file doesn't exist - please run falco-misp-connector.py first!"
+if ! [ -f ./ip46-outbound.test ]; then
+  echo "ip46-outbound.test file doesn't exist - please run falco-misp-connector.py first!"
+  exit
+fi
+
+if ! [ -f ./ip46-inbound.test ]; then
+  echo "ip46-inbound.test file doesn't exist - please run falco-misp-connector.py first!"
   exit
 fi
 
@@ -21,14 +26,14 @@ MISP_URL=$(cat ../config.py | grep misp_server_url | awk -F'= ' '{ print $2 }' |
 echo "Getting ip-dst using curl"
 curl -s --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":"ip-dst"}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-ip46-outbound.out
 cat ip46-outbound.test | sort |uniq > ip46-outbound.test.sorted
-echo "Performing diff on IP address outputs"
+echo "Performing diff on outbound IP addresses"
 diff curl-ip46-outbound.out ip46-outbound.test.sorted
 
 # inbound
 echo "Getting ip-src using curl"
 curl -s --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":"ip-src"}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-ip46-inbound.out
 cat ip46-inbound.test | sort |uniq > ip46-inbound.test.sorted
-echo "Performing diff on IP address outputs"
+echo "Performing diff on inbound IP addresses"
 diff curl-ip46-inbound.out ip46-inbound.test.sorted
 
 echo "Validating Falco outbound rules files"
