@@ -14,8 +14,13 @@ Released on 2024-08
 * changed sample-falco-[ipv4|ipv6|cidr]-rule.yaml file names to sample-falco-[ipv4|ipv6|cidr]-outbound-rule.yaml
 * changed variable names in the config file to relect outbound.
 * updated parse_config to check for new names
+* moved the sample rules into a rules directory
+* changed the list names to reflect inbound and outbound direction
 
-### Upgrades
+### Breaking Changes :warning:
+* the default list names have changed (added inbound/outbound identifer)
+* the default sample rule files have changed and moved into the rules directory
+* 
 
 
 

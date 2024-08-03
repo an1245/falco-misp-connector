@@ -190,6 +190,11 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, dom
 
     return ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list, cidr_inbound_list
     
+###########################################################################
+#   Checks whether the MISP entry is an IPv4, IPv6 or a CIDR Block        #
+#       - returns: lists with new indicators added                        #
+###########################################################################
+
 
 def checkIP(ip,ip4_list, ip6_list,cidr_list):
     is_cidr=False
