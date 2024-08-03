@@ -2,6 +2,9 @@
 
 Released on 2024-08
 
+### NOTE:
+* the new inbound rules require the *inbound* macro which are in the sandbox rules!
+
 ### Additions
 * Added exception list to sample-falco-ipv4-rule.yaml, sample-falco-ipv6-rule.yaml and sample-falco-cidr-rule.yaml
 * Added rules files sample-falco-ipv4-inbound-rule.yaml. sample-falco-ipv6-inbound-rule.yaml, sample-falco-cidr-inbound-rule.yaml
@@ -20,7 +23,7 @@ Released on 2024-08
 ### Breaking Changes :warning:
 * the default list names have changed (added inbound/outbound identifer)
 * the default sample rule files have changed and moved into the rules directory
-* 
+
 
 
 
