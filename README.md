@@ -1,7 +1,7 @@
 # Falco MISP Connector
 
 ## Introduction
-The Falco MISP Connector sources indicators from MISP server and consolidates them into Falco lists.  Currently the connector brings in *ip-src* and *ip-dst* indictors from the MISP server, breaking them out into a separate rule file for inbound (*ip-src*) IPv4, IPv6 and CIDR block, and outbound (*ip-dst*) IPv4, IPv6 and CIDR block.
+The Falco MISP Connector sources indicators from MISP server and consolidates them into Falco lists.  Currently the connector brings in *ip-src* and *ip-dst* indictors from the MISP server, breaking them out into a separate rule file for inbound IPv4/IPv6 addresses and CIDR blocks (*ip-src), and outbound IPv4/IPv6 addresses and CIDR blocks (*ip-dst*).
 
 ## Note Before - Indicator Filtering!
 It's not clear how many items Falco can support in a list - if you load 300k indicators into a list it might not work!  The best approach is to use the filtering options to formulate a highly targetted list of indicators.  This will give a much more manageable number of indicators and lower false positive rate.  I have provided a number of filtering options which are outlined in the *MISP Filtering details* details below.
@@ -110,7 +110,7 @@ misp_excludeDecayed = True
 ## How can I use these lists in Falco?
 The script will automatically append the six sample rules files in the rules directory to the end of the six Falco rules files that the connector generates - in these sample rules files you will find lists to create exceptions.  
 
-The six rules files that the connector generates (inbound/outbound files for IPv4,IPv6 and CIDR indicators) can then be copied into /etc/falco/rules.d/ directory and Falco restarted. 
+The six rules files that the connector generates (inbound/outbound rules files for IPv4,IPv6 and CIDR indicators) can then be copied into /etc/falco/rules.d/ directory and Falco restarted. 
 
 ## Debugging
 There are three configurations to help you debug the connector:
