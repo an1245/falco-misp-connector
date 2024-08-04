@@ -1,20 +1,16 @@
 # Falco MISP Connector
 
 ## Introduction
-The Falco MISP Connector sources indicators from MISP server and consolidates them into a Falco list.  Currently the connector sources destination IPv4 and IPv6 from a MISP server, however Falco only supports detections using IPv4/IPv6 indicators at this time.  The connector only sources destination IPv4/IPv6 (*ip-dst*) indicators at this time, but over time I will expand it to include source IPv4/IPv6 (*ip-src*) indicators as well.   The connector also supports CIDR blocks and will create a separate rules file for them.
+The Falco MISP Connector sources indicators from MISP server and consolidates them into Falco lists.  Currently the connector brings in *ip-src* and *ip-dst* indictors from the MISP server, breaking them into a separate rule files for inbound IPv4/IPv6 addresses and CIDR blocks (*ip-src*), and outbound IPv4/IPv6 addresses and CIDR blocks (*ip-dst*).
 
 ## Note Before - Indicator Filtering!
-It's not clear how many items Falco can support in a list - if you load 300k indicators into a list it might not work!  The best approach is to use the filtering options to formulate a highly targetted list of indicators.  This will give a much more manageable number of indicators and lower false positive rate.  I have provided a number of filtering options which are outlined in the *MISP Filtering details* details below.
+It's not clear how many items Falco can support in a list - if you load 300k indicators into a list it might not work!  The best approach is to use the filtering options to formulate a highly targetted list of indicators.  This will give a much more manageable number of indicators and lower false positive rate.  The connector has a number of filtering options that are outlined in the *MISP Filtering details* details below.
 
-There are a number of different APIs that can be used to extract the indicators out of a MISP server. There are also some complexities when filtering events server-side by date, using MISP fields like *date* or *last_seen* - not all these fields are consistent across events/objects/attributes, not all these fields are mandatory, and some fields (date) indicate the time the event occurred, not the last time an indicator was observed/changed - therefore these fields were not reliable for filtering indicators during my testing.
-
-However, the ***timestamp*** field is mandatory for events/attributes/objects and is updated each time a change occurs.  During my testing, filtering by the ***timestamp*** field on the client-side provided much more consistent filtering, with the obvious tradeoff being that you are pulling more data from the server.
-
-After trialling a lot of different approaches, I settled on an approach of:
-- fetching the indicators using the /attributes/ API
-- on client side - evaluate the timestamp field of every indicator and including it if it was newer than current time minus *misp_timeframe* days 
+There are a number of different APIs that can be used to extract the indicators out of a MISP server. The connector uses the ***/attributes/restSearch*** API and the ***timestamp*** field to evaluate the age of the attribute, but you can also choose to exclude attributes that are decayed, in the warning list, or not configured with the IDS flag.
 
 ## Prerequisites
+The plugin requires the ***inbound*** macro which is currently in the Falco [sandbox rules](https://github.com/falcosecurity/rules/blob/main/rules/falco-sandbox_rules.yaml).    ***NOTE:*** instrumenting the system calls using the inbound macro (accept,accept4,listen,recvfrom,recvmsg) may cause Falco to drop system calls on heavily loaded systems - watch for this in falco.log.
+
 The plugin requires the following items to be configured in *config.py*
 
 **MISP Feed**
@@ -55,12 +51,21 @@ pip install -r requirements.txt
 ##############################################
 #   Falco configuration details              #
 ##############################################
-falco_ipv4_rules_file='/etc/falco/rules.d/misp-ipv4-indicators.yaml'
-falco_ipv4_list_name='malicious_ip_list'
-falco_ipv6_rules_file='/etc/falco/rules.d/misp-ipv6-indicators.yaml'
-falco_ipv6_list_name='malicious_ipv6_list'
-falco_cidr_rules_file='/etc/falco/rules.d/misp-cidr-indicators.yaml'
-falco_cidr_list_name='malicious_cidr_list'
+# Outbound Rules
+falco_ipv4_outbound_rules_file='/etc/falco/rules.d/misp-ipv4-outbound-indicators.yaml'
+falco_ipv4_outbound_list_name='malicious_ipv4_outbound_list'
+falco_ipv6_outbound_rules_file='/etc/falco/rules.d/misp-ipv6-outbound-indicators.yaml'
+falco_ipv6_outbound_list_name='malicious_ipv6_outbound_list'
+falco_cidr_outbound_rules_file='/etc/falco/rules.d/misp-cidr-outbound-indicators.yaml'
+falco_cidr_outbound_list_name='malicious_cidr_outbound_list'
+
+# Inbound Rules
+falco_ipv4_inbound_rules_file='/etc/falco/rules.d/misp-ipv4-inbound-indicators.yaml'
+falco_ipv4_inbound_list_name='malicious_ipv4_inbound_list'
+falco_ipv6_inbound_rules_file='/etc/falco/rules.d/misp-ipv6-inbound-indicators.yaml'
+falco_ipv6_inbound_list_name='malicious_ipv6_inbound_list'
+falco_cidr_inbound_rules_file='/etc/falco/rules.d/misp-cidr-inbound-indicators.yaml'
+falco_cidr_inbound_list_name='malicious_cidr_inbound_list'
 
 ##############################################
 #   Debug                                    #
@@ -97,7 +102,9 @@ misp_excludeDecayed = True
 ```
 
 ## How can I use these lists in Falco?
-The script will automatically append the three sample rules files in the main directory (sample-falco-cidr-rule.yaml, sample-falco-ipv4-rule.yaml and sample-falco-ipv6-rule.yaml) to the end of the three Falco rules files that the connector generates - in these sample rules file you will find lists to create exceptions.  The three rules files that the connector generates (IPv4,IPv6 and CIDR) can then be copied into /etc/falco/rules.d/ directory and Falco restarted. 
+The script will automatically append the six sample rules files in the rules directory to the end of the six Falco rules files that the connector generates - in these sample rules files you will find lists to create exceptions.  
+
+The six rules files that the connector generates (inbound/outbound rules files for IPv4,IPv6 and CIDR indicators) can then be copied into /etc/falco/rules.d/ directory and Falco restarted. 
 
 ## Debugging
 There are three configurations to help you debug the connector:
