@@ -9,7 +9,7 @@ It's not clear how many items Falco can support in a list - if you load 300k ind
 There are a number of different APIs that can be used to extract the indicators out of a MISP server. The connector uses the ***/attributes/restSearch*** API and the ***timestamp*** field to evaluate the age of the attribute, but you can also choose to exclude attributes that are decayed, in the warning list, or not configured with the IDS flag.
 
 ## Prerequisites
-The plugin requires the ***inbound*** macro which is currently in the Falco [sandbox rules](https://github.com/falcosecurity/rules/blob/main/rules/falco-sandbox_rules.yaml)!  ***NOTE:*** instrumenting the system calls using the inbound macro (accept,accept4,listen,recvfrom,recvmsg) may cause Falco to drop system calls on heavily loaded systems - watch for this in falco.log.
+The plugin requires the ***inbound*** macro which is currently in the Falco [sandbox rules](https://github.com/falcosecurity/rules/blob/main/rules/falco-sandbox_rules.yaml).    ***NOTE:*** instrumenting the system calls using the inbound macro (accept,accept4,listen,recvfrom,recvmsg) may cause Falco to drop system calls on heavily loaded systems - watch for this in falco.log.
 
 The plugin requires the following items to be configured in *config.py*
 
