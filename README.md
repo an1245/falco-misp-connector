@@ -1,7 +1,7 @@
 # Falco MISP Connector
 
 ## Introduction
-The Falco MISP Connector sources indicators from MISP server and consolidates them into Falco lists.  Currently the connector brings in *ip-src* and *ip-dst* indictors from the MISP server, breaking them into a separate rule files for inbound IPv4/IPv6 addresses and CIDR blocks (*ip-src), and outbound IPv4/IPv6 addresses and CIDR blocks (*ip-dst*).
+The Falco MISP Connector sources indicators from MISP server and consolidates them into Falco lists.  Currently the connector brings in *ip-src* and *ip-dst* indictors from the MISP server, breaking them into a separate rule files for inbound IPv4/IPv6 addresses and CIDR blocks (*ip-src*), and outbound IPv4/IPv6 addresses and CIDR blocks (*ip-dst*).
 
 ## Note Before - Indicator Filtering!
 It's not clear how many items Falco can support in a list - if you load 300k indicators into a list it might not work!  The best approach is to use the filtering options to formulate a highly targetted list of indicators.  This will give a much more manageable number of indicators and lower false positive rate.  I have provided a number of filtering options which are outlined in the *MISP Filtering details* details below.
@@ -15,7 +15,7 @@ After trialling a lot of different approaches, I settled on an approach of:
 - on client side - evaluate the timestamp field of every indicator and including it if it was newer than current time minus *misp_timeframe* days 
 
 ## Prerequisites
-The plugin requires the ***inbound*** macro which is currently in the Falco [sandbox rules](https://github.com/falcosecurity/rules/blob/main/rules/falco-sandbox_rules.yaml)!  ***NOTE:*** instrumenting the system calls in the inbound macro (accept,accept4,listen,recvfrom,recvmsg) may cause Falco to drop system calls on heavily loaded systems - watch for this in falco.log.
+The plugin requires the ***inbound*** macro which is currently in the Falco [sandbox rules](https://github.com/falcosecurity/rules/blob/main/rules/falco-sandbox_rules.yaml)!  ***NOTE:*** instrumenting the system calls using the inbound macro (accept,accept4,listen,recvfrom,recvmsg) may cause Falco to drop system calls on heavily loaded systems - watch for this in falco.log.
 
 The plugin requires the following items to be configured in *config.py*
 
