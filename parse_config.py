@@ -44,6 +44,18 @@ def parseConfig():
     if not 'falco_cidr_inbound_list_name' in globals():
         print("Configuration file parameter 'falco_cidr_inbound_list_name' does not seem to exist")
         sys.exit(0)
+    if not 'falco_ipdstport_outbound_rules_file' in globals():
+        print("Configuration file parameter 'falco_ipdstport_inbound_rules_file' does not seem to exist")
+        sys.exit(0)
+    if not 'falco_ipdstport_outbound_list_name' in globals():
+        print("Configuration file parameter 'falco_cidr_inbound_list_name' does not seem to exist")
+        sys.exit(0)
+    if not 'falco_ipsrcport_inbound_rules_file' in globals():
+        print("Configuration file parameter 'falco_ipsrcport_inbound_rules_file' does not seem to exist")
+        sys.exit(0)
+    if not 'falco_ipsrcport_inbound_list_name' in globals():
+        print("Configuration file parameter 'falco_cidr_inbound_list_name' does not seem to exist")
+        sys.exit(0)
     if not 'debug' in globals():
         print("Configuration file parameter 'debug' does not seem to exist")
         sys.exit(0)

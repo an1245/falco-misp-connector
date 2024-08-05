@@ -58,6 +58,8 @@ falco_ipv6_outbound_rules_file='/etc/falco/rules.d/misp-ipv6-outbound-indicators
 falco_ipv6_outbound_list_name='malicious_ipv6_outbound_list'
 falco_cidr_outbound_rules_file='/etc/falco/rules.d/misp-cidr-outbound-indicators.yaml'
 falco_cidr_outbound_list_name='malicious_cidr_outbound_list'
+falco_ipdstport_outbound_rules_file='/etc/falco/rules.d/misp-ipdstport-outbound-indicators.yaml'
+falco_ipdstport_outbound_list_name = 'malicious_ipdstport_outbound_list'
 
 # Inbound Rules
 falco_ipv4_inbound_rules_file='/etc/falco/rules.d/misp-ipv4-inbound-indicators.yaml'
@@ -66,6 +68,8 @@ falco_ipv6_inbound_rules_file='/etc/falco/rules.d/misp-ipv6-inbound-indicators.y
 falco_ipv6_inbound_list_name='malicious_ipv6_inbound_list'
 falco_cidr_inbound_rules_file='/etc/falco/rules.d/misp-cidr-inbound-indicators.yaml'
 falco_cidr_inbound_list_name='malicious_cidr_inbound_list'
+falco_ipsrcport_inbound_rules_file='/etc/falco/rules.d/misp-ipsrcport-outbound-indicators.yaml'
+falco_ipsrcport_inbound_list_name = 'malicious_ipsrcport_outbound_list'
 
 ##############################################
 #   Debug                                    #
@@ -102,9 +106,9 @@ misp_excludeDecayed = True
 ```
 
 ## How can I use these lists in Falco?
-The script will automatically append the six sample rules files in the rules directory to the end of the six Falco rules files that the connector generates - in these sample rules files you will find lists to create exceptions.  
+The script will automatically append the eight sample rules files in the rules directory to the end of the eight Falco rules files that the connector generates - in these sample rules files you will find lists to create exceptions.  
 
-The six rules files that the connector generates (inbound/outbound rules files for IPv4,IPv6 and CIDR indicators) can then be copied into /etc/falco/rules.d/ directory and Falco restarted. 
+The eight rules files that the connector generates (inbound/outbound rules files for IPv4,IPv6, CIDR, ip-dst|port and ip-src|port indicators) can then be copied into /etc/falco/rules.d/ directory and Falco restarted. 
 
 ## Debugging
 There are three configurations to help you debug the connector:

@@ -22,7 +22,7 @@ from util_functions import *
 #      - returns lists of IOCS                                    #
 ###################################################################
 
-def fetchMISPIndicators(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list,cidr_outbound_list,ip4_inbound_list, ip6_inbound_list,cidr_inbound_list):
+def fetchMISPIndicators(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list,cidr_outbound_list,ip4_inbound_list, ip6_inbound_list,cidr_inbound_list, ipdstport_list, ipsrcport_list):
 
     # Set the timestamp we are looking at
     indicatorAfterTimestamp = 0
@@ -33,12 +33,12 @@ def fetchMISPIndicators(ip4_outbound_list, ip6_outbound_list, domain_list, file_
 
 
     print("Fetching New Indicators from Attributes for server: "+ misp_server_url + " after timestamp: " + str(indicatorAfterTimestamp)) 
-    ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list,cidr_inbound_list = pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list,cidr_inbound_list, indicatorAfterTimestamp)    
+    ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list,cidr_inbound_list, ipdstport_list, ipsrcport_list = pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list,cidr_inbound_list, ipdstport_list, ipsrcport_list, indicatorAfterTimestamp)    
     if debug == True: printListSizes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, uri_list,cidr_outbound_list, sha256_dict,ip4_inbound_list, ip6_inbound_list,cidr_inbound_list)
     if debug == True: print("Finished Fetching New Indicators from Attributes for server: "+ misp_server_url)
     
     
-    return ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list, cidr_inbound_list
+    return ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list, cidr_inbound_list, ipdstport_list, ipsrcport_list
 
 ##############################################
 #   Build HTTP Body                          #
@@ -101,7 +101,7 @@ def printMISPBody(body):
 #       - returns: lists with new indicators added                        #
 ###########################################################################
             
-def pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list,cidr_inbound_list, indicatorAfterTimestamp):
+def pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list,cidr_inbound_list, ipdstport_list, ipsrcport_list, indicatorAfterTimestamp):
    
     body = {
             "deleted": False,
@@ -161,6 +161,12 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, dom
                     ip4_outbound_list, ip6_outbound_list, cidr_outbound_list = checkIP(ioc_value, ip4_outbound_list, ip6_outbound_list, cidr_outbound_list)
                 case "ip-src":
                     ip4_inbound_list, ip6_inbound_list, cidr_inbound_list = checkIP(ioc_value, ip4_inbound_list, ip6_inbound_list, cidr_inbound_list)
+                case "ip-dst|port":
+                    if debugindicators == True: print(" - Adding ip-dst|port Indicator: " + str(ioc_value))
+                    itemAdd(ipdstport_list,ioc_value)
+                case "ip-src|port":
+                    if debugindicators == True: print(" - Adding ip-src|port Indicator: " + str(ioc_value))
+                    itemAdd(ipsrcport_list,ioc_value)
                 case "domain":
                     if checkDomainName(ioc_value):
                         if debugindicators == True: print(" - Adding Domain Indicator: " + str(ioc_value))
@@ -188,7 +194,7 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, dom
             if debugindicators: print("Storing hash:" + sha256_value + "   = ['" + sha256_dict[sha256_value][0] + "','" + sha256_dict[sha256_value][1] + "','" + sha256_dict[sha256_value][2] + "']")
         
 
-    return ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list, cidr_inbound_list
+    return ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list, cidr_inbound_list, ipdstport_list, ipsrcport_list
     
 ###########################################################################
 #   Checks whether the MISP entry is an IPv4, IPv6 or a CIDR Block        #
