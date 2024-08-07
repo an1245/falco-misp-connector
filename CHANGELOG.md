@@ -1,3 +1,17 @@
+## v0.6
+
+Released on 2024-
+
+### Additions
+* added falco_ipdstport_outbound_rules_[list|file] and falco_ipsrcport_inbound_rules_[list|file] to config.py
+* added ipdstport_list and ipsrcport_list variables to falco-misp-connector.py for processing *ip-dst|port* and *ip-src|port*
+* updated  "ip-dst|port","ip-src|port" to type in misp_functions.py
+* added samples rules to /rules/ for "ip-dst|port" and "ip-src|port"
+* write test file outputs
+* updated test.bash with tests for "ip-dst|port" and "ip-src|port"
+* updated README
+
+
 ## v0.5
 
 Released on 2024-08-04

@@ -106,7 +106,7 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, dom
     body = {
             "deleted": False,
             #"type": ["filename", "sha256", "size-in-bytes", "ip-dst","domain", "hostname", "url"]
-            "type": ["ip-dst","ip-src"]
+            "type": ["ip-dst","ip-src","ip-dst|port","ip-src|port"]
     }
 
     body = pyMISPBuildHTTPBody(body)

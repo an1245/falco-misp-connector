@@ -163,6 +163,15 @@ if 'debugtest' in globals() and debugtest == True:
     ip4_ip6_cidr_newline_list_output_str = ip4_newline_list_output_str +  ip6_newline_list_output_str + cidr_newline_list_output_str
     writeNewlineFile("tests/ip46-inbound.test", ip4_ip6_cidr_newline_list_output_str )
 
+    # IPSrcPort and IPDstPort rules
+    print("Writing IPDstPort test valiation file")
+    ipdstport_list_output_str = createNLArray(ipdstport_list)
+    writeNewlineFile("tests/ipdstport-outbound.test", ipdstport_list_output_str )
+
+    print("Writing IPSrcPort test valiation file")
+    ipsrcport_list_output_str = createNLArray(ipsrcport_list)
+    writeNewlineFile("tests/ipsrcport-inbound.test", ipsrcport_list_output_str )
+
     # Outbound 
     print("Writing IPv4 Rules file to test folder")
     writeFalcoRulesFileYaml("tests/ipv4-outbound-rules.yaml", falco_ipv4_outbound_list_name, ip4_outbound_list_output_str)
@@ -189,7 +198,7 @@ if 'debugtest' in globals() and debugtest == True:
     writeFalcoRulesFileYaml("tests/ipdstport-outbound-rules.yaml", falco_ipdstport_outbound_list_name, ipdstport_list_output_str)
     
     print("Writing IPSrcPort Rules file to test folder")
-    writeFalcoRulesFileYaml("tests/cidr-inbound-rules.yaml", falco_ipsrcport_inbound_list_name, ipsrcport_list_output_str)
+    writeFalcoRulesFileYaml("tests/ipsrcport-inbound-rules.yaml", falco_ipsrcport_inbound_list_name, ipsrcport_list_output_str)
 
     print("Finished writing validation files - exiting")
     sys.exit(0)
