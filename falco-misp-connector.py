@@ -76,8 +76,8 @@ ip4_inbound_list_output_str =createYAMLArray(ip4_inbound_list)
 cidr_inbound_list_output_str =createYAMLArray(cidr_inbound_list)
 
 # IPSrcPort and IPDstPort lists
-ipdstport_list_output_str = createYAMLArray(ipdstport_list) 
-ipsrcport_list_output_str = createYAMLArray(ipsrcport_list) 
+ipdstport_outbound_list_output_str = createYAMLArray(ipdstport_list) 
+ipsrcport_inbound_list_output_str = createYAMLArray(ipsrcport_list) 
 
 #  The IPV6 addresses need speech marks around them
 # Outbound list
@@ -134,12 +134,12 @@ cidr_inbound_list_output_str = cidr_inbound_list_output_str + "\n\n" + cidr_rule
 # read: sample-falco-ipdstport-outbound-rule.yaml
 with open("./rules/sample-falco-ipdstport-outbound-rule.yaml", 'r') as file:
     ipdstport_rule_content = file.read()
-ipdstport_list_output_str = ipdstport_list_output_str + "\n\n" + ipdstport_rule_content
+ipdstport_outbound_list_output_str = ipdstport_outbound_list_output_str + "\n\n" + ipdstport_rule_content
 
 # read: sample-falco-ipsrcport-outbound-rule.yaml
 with open("./rules/sample-falco-ipsrcport-inbound-rule.yaml", 'r') as file:
     ipsrcport_rule_content = file.read()
-ipsrcport_list_output_str = ipsrcport_list_output_str + "\n\n" + ipsrcport_rule_content
+ipsrcport_inbound_list_output_str = ipsrcport_inbound_list_output_str + "\n\n" + ipsrcport_rule_content
 
 ###########################################################
 #   Write a Newline file (used validation during testing) #
@@ -195,10 +195,10 @@ if 'debugtest' in globals() and debugtest == True:
 
     # IPSrcPort and IPDstPort rules
     print("Writing IPDstPort Rules file to test folder")
-    writeFalcoRulesFileYaml("tests/ipdstport-outbound-rules.yaml", falco_ipdstport_outbound_list_name, ipdstport_list_output_str)
+    writeFalcoRulesFileYaml("tests/ipdstport-outbound-rules.yaml", falco_ipdstport_outbound_list_name, ipdstport_outbound_list_output_str)
     
     print("Writing IPSrcPort Rules file to test folder")
-    writeFalcoRulesFileYaml("tests/ipsrcport-inbound-rules.yaml", falco_ipsrcport_inbound_list_name, ipsrcport_list_output_str)
+    writeFalcoRulesFileYaml("tests/ipsrcport-inbound-rules.yaml", falco_ipsrcport_inbound_list_name, ipsrcport_inbound_list_output_str)
 
     print("Finished writing validation files - exiting")
     sys.exit(0)
@@ -252,11 +252,11 @@ writeFalcoRulesFileYaml(falco_cidr_inbound_rules_file, falco_cidr_inbound_list_n
 ################################################################
 if debugyaml == True: print("- IPDSTPORT Outbound YAML:" + str(ipdstport_list_output_str))
 print("Writing out IPDSTPORT outbound indicators to: " + ipdstport_list_output_str)
-writeFalcoRulesFileYaml(falco_ipdstport_outbound_rules_file, falco_ipdstport_outbound_list_name, ipdstport_list_output_str)
+writeFalcoRulesFileYaml(falco_ipdstport_outbound_rules_file, falco_ipdstport_outbound_list_name, ipdstport_outbound_list_output_str)
 
 ################################################################
 #   Update the items in the Falco SRC Port Inbound rules file #
 ################################################################
 if debugyaml == True: print("- IPSRCPORT Inbound YAML:" + str(ipsrcport_list_output_str))
 print("Writing out IPSRCPORT Inbound indicators to: " + ipsrcport_list_output_str)
-writeFalcoRulesFileYaml(falco_ipsrcport_inbound_rules_file, falco_ipsrcport_inbound_list_name, ipsrcport_list_output_str)
+writeFalcoRulesFileYaml(falco_ipsrcport_inbound_rules_file, falco_ipsrcport_inbound_list_name, ipsrcport_inbound_list_output_str)

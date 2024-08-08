@@ -38,14 +38,14 @@ diff curl-ip46-inbound.out ip46-inbound.test.sorted
 
 # ip-dst_port
 echo "Getting ip-dst_port using curl"
-curl -s --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":"ip-dst|port}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-ip-dst_port-outbound.out
+curl -s --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":"ip-dst|port"}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-ip-dst_port-outbound.out
 cat ipdstport-outbound.test | sort |uniq > ipdstport-outbound.test.sorted
 echo "Performing diff on inbound IP addresses"
 diff curl-ip-dst_port-outbound.out ipdstport-outbound.test.sorted
 
 # ip-src_port
 echo "Getting ip-src_port using curl"
-curl -s --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":"ip-src|port}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-ip-src_port-inbound.out
+curl -s --insecure -XPOST --header "Authorization: $MISP_API_KEY" --header "Accept: application/json" --header "Content-Type: application/json" -d '{"returnFormat":"json","to_ids":true, "deleted":false, "excludeDecayed":true, "type":"ip-src|port"}'  https://$MISP_URL/attributes/restSearch | jq .response.Attribute[].value | sed 's/\"//g' |sort | uniq > ./curl-ip-src_port-inbound.out
 cat ipsrcport-inbound.test | sort |uniq > ipsrcport-inbound.test.sorted
 echo "Performing diff on inbound IP addresses"
 diff curl-ip-src_port-inbound.out ipsrcport-inbound.test.sorted
