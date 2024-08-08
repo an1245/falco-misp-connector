@@ -74,10 +74,6 @@ cidr_outbound_list_output_str =createYAMLArray(cidr_outbound_list)
 ip4_inbound_list_output_str =createYAMLArray(ip4_inbound_list) 
 cidr_inbound_list_output_str =createYAMLArray(cidr_inbound_list)
 
-# IPSrcPort and IPDstPort lists
-ipdstport_outbound_list_output_str = createYAMLArray(ipdstport_list) 
-ipsrcport_inbound_list_output_str = createYAMLArray(ipsrcport_list) 
-
 #  The IPV6 addresses need speech marks around them
 # Outbound list
 ip6_outbound_list_output_str =createYAMLArray(ip6_outbound_list) 
@@ -90,6 +86,19 @@ ip6_inbound_list_output_str =createYAMLArray(ip6_inbound_list)
 ip6_inbound_list_output_str = ip6_inbound_list_output_str.replace("[", "[\"")
 ip6_inbound_list_output_str = ip6_inbound_list_output_str.replace("]", "\"]")
 ip6_inbound_list_output_str = ip6_inbound_list_output_str.replace(",", "\",\"")
+
+# IPSrcPort and IP DstPort need speech marks as well.
+# Outbound list
+ipdstport_outbound_list_output_str = createYAMLArray(ipdstport_list) 
+ipdstport_outbound_list_output_str = ipdstport_outbound_list_output_str.replace("[", "[\"")
+ipdstport_outbound_list_output_str = ipdstport_outbound_list_output_str.replace("]", "\"]")
+ipdstport_outbound_list_output_str = ipdstport_outbound_list_output_str.replace(",", "\",\"")
+
+#Inbound List
+ipsrcport_inbound_list_output_str = createYAMLArray(ipsrcport_list) 
+ipsrcport_inbound_list_output_str = ipsrcport_inbound_list_output_str.replace("[", "[\"")
+ipsrcport_inbound_list_output_str = ipsrcport_inbound_list_output_str.replace("]", "\"]")
+ipsrcport_inbound_list_output_str = ipsrcport_inbound_list_output_str.replace(",", "\",\"")
 
 
 ######################################################################################################
