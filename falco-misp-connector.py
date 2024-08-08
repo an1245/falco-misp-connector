@@ -39,7 +39,7 @@ print("Starting MISP connector")
 if debug == True: print("Parsing Configuration file")
 parseConfig()
 
-# We currently support Inbound/Outbound IPv4, IPv6 and CIDR blocks.
+# We currently support Inbound/Outbound IPv4, IPv6, CIDR blocks and IP:port pairs
 # But we can easily expand to support DNS names and Malware URLS, file names and MD5 hashes 
 ip4_outbound_list = []
 domain_list = []
@@ -62,11 +62,10 @@ ipsrcport_list = []
 print("Contacting MISP Server: " + str(misp_server_url) )
 ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list,ip4_inbound_list, ip6_inbound_list, cidr_inbound_list, ipdstport_list, ipsrcport_list = fetchMISPIndicators(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list,cidr_outbound_list, ip4_inbound_list, ip6_inbound_list,cidr_inbound_list, ipdstport_list, ipsrcport_list)
 
-
-
 #################################################
 # Convert arrays to a string ready for writing  #
 #################################################
+
 # Outbound list
 ip4_outbound_list_output_str =createYAMLArray(ip4_outbound_list) 
 cidr_outbound_list_output_str =createYAMLArray(cidr_outbound_list) 
@@ -98,7 +97,9 @@ ip6_inbound_list_output_str = ip6_inbound_list_output_str.replace(",", "\",\"")
 # This makes it easier to pass Falco validation                                                      #
 ######################################################################################################
 
-# Outbound Rules
+##################
+# Outbound Rules #
+##################
 # read: sample-falco-ipv4-outbound-rule.yaml
 with open("./rules/sample-falco-ipv4-outbound-rule.yaml", 'r') as file:
     ipv4_rule_content = file.read()
@@ -114,7 +115,10 @@ with open("./rules/sample-falco-cidr-outbound-rule.yaml", 'r') as file:
     cidr_rule_content = file.read()
 cidr_outbound_list_output_str = cidr_outbound_list_output_str + "\n\n" + cidr_rule_content
 
-# Inbound Rules
+#################
+# Inbound Rules #
+#################
+
 # read: sample-falco-ipv4-inbound-rule.yaml
 with open("./rules/sample-falco-ipv4-inbound-rule.yaml", 'r') as file:
     ipv4_rule_content = file.read()
@@ -130,7 +134,10 @@ with open("./rules/sample-falco-cidr-inbound-rule.yaml", 'r') as file:
     cidr_rule_content = file.read()
 cidr_inbound_list_output_str = cidr_inbound_list_output_str + "\n\n" + cidr_rule_content
 
-# IPSrcPort and IPDstPort rules
+#################################
+# IPSrcPort and IPDstPort rules #
+#################################
+
 # read: sample-falco-ipdstport-outbound-rule.yaml
 with open("./rules/sample-falco-ipdstport-outbound-rule.yaml", 'r') as file:
     ipdstport_rule_content = file.read()
@@ -223,8 +230,6 @@ writeFalcoRulesFileYaml(falco_ipv6_outbound_rules_file, falco_ipv6_outbound_list
 if debugyaml == True: print("- CIDR Outbound YAML:" + str(cidr_outbound_list_output_str))
 print("Writing out CIDR outbound indicators to: " + falco_cidr_outbound_rules_file)
 writeFalcoRulesFileYaml(falco_cidr_outbound_rules_file, falco_cidr_outbound_list_name, cidr_outbound_list_output_str)
-
-
 
 ################################################################
 #   Update the items in the Falco inbound rules files for IPv4 #

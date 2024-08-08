@@ -84,7 +84,7 @@ def pyMISPBuildHTTPBody(body):
 
 
 ##############################################
-#  Print MISP Body Variales                      #
+#  Print MISP Body Variales                  #
 #      - no return value                     #
 ##############################################
 def printMISPBody(body):
