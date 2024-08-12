@@ -11,6 +11,9 @@ Released on 2024-
 * updated test.bash with tests for "ip-dst|port" and "ip-src|port"
 * updated README
 
+### Upgrades
+* Bump pyyaml to 6.0.2
+
 
 ## v0.5
 
