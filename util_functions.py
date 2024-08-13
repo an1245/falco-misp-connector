@@ -29,6 +29,7 @@ def itemAdd(list, item):
 
 ##############################################
 #  Function to remove item to JSON           #
+#      - returns list                        #
 ##############################################
 def itemRemove(list, item):
     if item in list:
@@ -156,10 +157,10 @@ def createYAMLArray(input_list):
     input_list_output_str = input_list_output_str + "]"
     return(input_list_output_str)
 
-##############################################
-#  Create content for file with 1 entry/line #
-#      - no return value                     #
-##############################################
+##########################################################
+#  Create content for file with 1 entry/line             #
+#      - a string with objects delimited by newline char #
+##########################################################
 def createNLArray(input_list):
     input_list_output_str = ""
     for input in input_list:
