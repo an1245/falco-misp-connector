@@ -1,6 +1,6 @@
-## v0.6
+## v0.7
 
-Released on 2024-
+Not yet released
 
 ### Additions
 * added falco_ipdstport_outbound_rules_[list|file] and falco_ipsrcport_inbound_rules_[list|file] to config.py
@@ -11,8 +11,18 @@ Released on 2024-
 * updated test.bash with tests for "ip-dst|port" and "ip-src|port"
 * updated README
 
+
+## v0.6
+
+Released on 2025-12-30
+
 ### Upgrades
-* Bump pyyaml to 6.0.2
+* Upgraded python-dateutil==2.9.0.post0
+* Upgraded urllib3==2.6.2
+* Upgraded pymisp==2.5.17.3
+* Upgraded requests==2.32.5
+* Upgraded pyyaml==6.0.3
+* Upgraded ipaddress==1.0.23
 
 
 ## v0.5
