@@ -1,3 +1,16 @@
+## v0.6
+
+Released on 2025-12-30
+
+### Upgrades
+* Upgraded python-dateutil==2.9.0.post0
+* Upgraded urllib3==2.6.2
+* Upgraded pymisp==2.5.17.3
+* Upgraded requests==2.32.5
+* Upgraded pyyaml==6.0.3
+* Upgraded ipaddress==1.0.23
+
+
 ## v0.5
 
 Released on 2024-08-04
