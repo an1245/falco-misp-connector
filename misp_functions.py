@@ -34,7 +34,7 @@ def fetchMISPIndicators(ip4_outbound_list, ip6_outbound_list, domain_list, file_
 
     print("Fetching New Indicators from Attributes for server: "+ misp_server_url + " after timestamp: " + str(indicatorAfterTimestamp)) 
     ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list,cidr_inbound_list, ipdstport_list, ipsrcport_list = pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list,cidr_inbound_list, ipdstport_list, ipsrcport_list, indicatorAfterTimestamp)    
-    if debug == True: printListSizes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, uri_list,cidr_outbound_list, sha256_dict,ip4_inbound_list, ip6_inbound_list,cidr_inbound_list)
+    if debug == True: printListSizes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, uri_list,cidr_outbound_list, sha256_dict,ip4_inbound_list, ip6_inbound_list,cidr_inbound_list, ipdstport_list, ipsrcport_list)
     if debug == True: print("Finished Fetching New Indicators from Attributes for server: "+ misp_server_url)
     
     

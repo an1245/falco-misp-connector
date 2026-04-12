@@ -98,7 +98,7 @@ def parseConfig():
         print("Configuration file parameter 'falco_cidr_inbound_rules_file' does not seem to be a file.  Please check parameter and try again")
         sys.exit(0)
     if not re.match('(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]',misp_server_url):
-        print("Configuration file parameter 'misp_server_url' does not seem to be a file.  Please check parameter and try again")
+        print("Configuration file parameter 'misp_server_url' does not seem to be a valid url - did you remove the https:// ?.  Please check parameter and try again")
         sys.exit(0)
     if not (misp_is_https == True or misp_is_https == False):
         print("Configuration file parameter 'misp_is_https' does not seem to be True or False.  misp_is_https must equal True or False")

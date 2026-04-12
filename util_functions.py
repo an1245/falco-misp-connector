@@ -128,7 +128,7 @@ def checkDomainName(domain):
 #  Print List Sizes                          #
 #      - no return value                     #
 ##############################################
-def printListSizes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, uri_list,cidr_outbound_list,sha256_dict,ip4_inbound_list,ip6_inbound_list,cidr_inbound_list):
+def printListSizes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, uri_list,cidr_outbound_list,sha256_dict,ip4_inbound_list,ip6_inbound_list,cidr_inbound_list, ipdstport_list, ipsrcport_list):
         if debug == True: print("----------------- List Sizes -----------------")
         if debug == True: print("--             ip4_outbound_list size:" + str(len(ip4_outbound_list)))
         if debug == True: print("--             ip6_outbound_list size:" + str(len(ip6_outbound_list)))
@@ -136,6 +136,8 @@ def printListSizes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list,
         if debug == True: print("--             ip4_inbound_list size:" + str(len(ip4_inbound_list)))
         if debug == True: print("--             ip6_inbound_list size:" + str(len(ip6_inbound_list)))
         if debug == True: print("--             cidr_inbound_list size:" + str(len(cidr_inbound_list)))
+        if debug == True: print("--             ipdstport_list size:" + str(len(ipdstport_list)))
+        if debug == True: print("--             ipsrcport_list size:" + str(len(ipsrcport_list)))
         if debug == True: print("--             domain_list size:" + str(len(domain_list)))
         if debug == True: print("--             file_list size:" + str(len(file_list)))
         if debug == True: print("--             uri_list size:" + str(len(uri_list)))

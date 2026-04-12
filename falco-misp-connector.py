@@ -265,12 +265,12 @@ writeFalcoRulesFileYaml(falco_cidr_inbound_rules_file, falco_cidr_inbound_list_n
 #   Update the items in the Falco DST Port Outbound rules file #
 ################################################################
 if debugyaml == True: print("- IPDSTPORT Outbound YAML:" + str(ipdstport_list_output_str))
-print("Writing out IPDSTPORT outbound indicators to: " + ipdstport_list_output_str)
+print("Writing out IPDSTPORT outbound indicators to: " + falco_ipdstport_outbound_rules_file)
 writeFalcoRulesFileYaml(falco_ipdstport_outbound_rules_file, falco_ipdstport_outbound_list_name, ipdstport_outbound_list_output_str)
 
 ################################################################
 #   Update the items in the Falco SRC Port Inbound rules file #
 ################################################################
 if debugyaml == True: print("- IPSRCPORT Inbound YAML:" + str(ipsrcport_list_output_str))
-print("Writing out IPSRCPORT Inbound indicators to: " + ipsrcport_list_output_str)
+print("Writing out IPSRCPORT Inbound indicators to: " + falco_ipsrcport_inbound_rules_file)
 writeFalcoRulesFileYaml(falco_ipsrcport_inbound_rules_file, falco_ipsrcport_inbound_list_name, ipsrcport_inbound_list_output_str)
