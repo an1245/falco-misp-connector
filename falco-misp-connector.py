@@ -36,7 +36,7 @@ from falco_functions import *
 
 
 print("Starting MISP connector")
-if debug == True: print("Parsing Configuration file")
+if debug is True: print("Parsing Configuration file")
 parseConfig()
 
 # We currently support Inbound/Outbound IPv4, IPv6 and CIDR blocks.
@@ -94,33 +94,33 @@ ip6_inbound_list_output_str = ip6_inbound_list_output_str.replace(",", "\",\"")
 
 # Outbound Rules
 # read: sample-falco-ipv4-outbound-rule.yaml
-with open("./rules/sample-falco-ipv4-outbound-rule.yaml", 'r') as file:
+with open("./rules/sample-falco-ipv4-outbound-rule.yaml", 'r', encoding="utf-8") as file:
     ipv4_rule_content = file.read()
 ip4_outbound_list_output_str = ip4_outbound_list_output_str + "\n\n" + ipv4_rule_content
 
 # read: sample-falco-ipv6-outbound-rule.yaml
-with open("./rules/sample-falco-ipv6-outbound-rule.yaml", 'r') as file:
+with open("./rules/sample-falco-ipv6-outbound-rule.yaml", 'r', encoding="utf-8") as file:
     ipv6_rule_content = file.read()
 ip6_outbound_list_output_str = ip6_outbound_list_output_str + "\n\n" + ipv6_rule_content
 
 # read: sample-falco-cidr-outbound-rule.yaml
-with open("./rules/sample-falco-cidr-outbound-rule.yaml", 'r') as file:
+with open("./rules/sample-falco-cidr-outbound-rule.yaml", 'r', encoding="utf-8") as file:
     cidr_rule_content = file.read()
 cidr_outbound_list_output_str = cidr_outbound_list_output_str + "\n\n" + cidr_rule_content
 
 # Inbound Rules
 # read: sample-falco-ipv4-inbound-rule.yaml
-with open("./rules/sample-falco-ipv4-inbound-rule.yaml", 'r') as file:
+with open("./rules/sample-falco-ipv4-inbound-rule.yaml", 'r', encoding="utf-8") as file:
     ipv4_rule_content = file.read()
 ip4_inbound_list_output_str = ip4_inbound_list_output_str + "\n\n" + ipv4_rule_content
 
 # read: sample-falco-ipv6-inbound-rule.yaml
-with open("./rules/sample-falco-ipv6-inbound-rule.yaml", 'r') as file:
+with open("./rules/sample-falco-ipv6-inbound-rule.yaml", 'r', encoding="utf-8") as file:
     ipv6_rule_content = file.read()
 ip6_inbound_list_output_str = ip6_inbound_list_output_str + "\n\n" + ipv6_rule_content
 
 # read: sample-falco-cidr-inbound-rule.yaml
-with open("./rules/sample-falco-cidr-inbound-rule.yaml", 'r') as file:
+with open("./rules/sample-falco-cidr-inbound-rule.yaml", 'r', encoding="utf-8") as file:
     cidr_rule_content = file.read()
 cidr_inbound_list_output_str = cidr_inbound_list_output_str + "\n\n" + cidr_rule_content
 
@@ -128,7 +128,7 @@ cidr_inbound_list_output_str = cidr_inbound_list_output_str + "\n\n" + cidr_rule
 ###########################################################
 #   Write a Newline file (used validation during testing) #
 ###########################################################
-if 'debugtest' in globals() and debugtest == True:
+if 'debugtest' in globals() and debugtest is True:
     # Write IPv4 and IPv6 list 
     
     # Outbound
@@ -174,43 +174,41 @@ if 'debugtest' in globals() and debugtest == True:
 #################################################################
 #   Update the items in the Falco outbound rules files for IPv4 #
 #################################################################
-if debugyaml == True: print("- IPv4 Outbound YAML:" + str(ip4_outbound_list_output_str))
+if debugyaml is True: print("- IPv4 Outbound YAML:" + str(ip4_outbound_list_output_str))
 print("Writing out IPv4 outbound indicators to: " + falco_ipv4_outbound_rules_file)
 writeFalcoRulesFileYaml(falco_ipv4_outbound_rules_file, falco_ipv4_outbound_list_name, ip4_outbound_list_output_str)
 
 #################################################################
 #   Update the items in the Falco outbound rules files for IPv6 #
 #################################################################
-if debugyaml == True: print("- IPv6 Outbound YAML:" + str(ip6_outbound_list_output_str))
+if debugyaml is True: print("- IPv6 Outbound YAML:" + str(ip6_outbound_list_output_str))
 print("Writing out IPv6 outbound indicators to: " + falco_ipv6_outbound_rules_file)
 writeFalcoRulesFileYaml(falco_ipv6_outbound_rules_file, falco_ipv6_outbound_list_name, ip6_outbound_list_output_str)
 
 #################################################################
 #   Update the items in the Falco outbound rules files for CIDR #
 #################################################################
-if debugyaml == True: print("- CIDR Outbound YAML:" + str(cidr_outbound_list_output_str))
+if debugyaml is True: print("- CIDR Outbound YAML:" + str(cidr_outbound_list_output_str))
 print("Writing out CIDR outbound indicators to: " + falco_cidr_outbound_rules_file)
 writeFalcoRulesFileYaml(falco_cidr_outbound_rules_file, falco_cidr_outbound_list_name, cidr_outbound_list_output_str)
-
-
 
 ################################################################
 #   Update the items in the Falco inbound rules files for IPv4 #
 ################################################################
-if debugyaml == True: print("- IPv4 Inbound YAML:" + str(ip4_inbound_list_output_str))
+if debugyaml is True: print("- IPv4 Inbound YAML:" + str(ip4_inbound_list_output_str))
 print("Writing out IPv4 inbound indicators to: " + falco_ipv4_inbound_rules_file)
 writeFalcoRulesFileYaml(falco_ipv4_inbound_rules_file, falco_ipv4_inbound_list_name, ip4_inbound_list_output_str)
 
 ################################################################
 #   Update the items in the Falco inbound rules files for IPv6 #
 ################################################################
-if debugyaml == True: print("- IPv6 Inbound YAML:" + str(ip6_inbound_list_output_str))
+if debugyaml is True: print("- IPv6 Inbound YAML:" + str(ip6_inbound_list_output_str))
 print("Writing out IPv6 inbound indicators to: " + falco_ipv6_inbound_rules_file)
 writeFalcoRulesFileYaml(falco_ipv6_inbound_rules_file, falco_ipv6_inbound_list_name, ip6_inbound_list_output_str)
 
 ################################################################
 #   Update the items in the Falco inbound rules files for CIDR #
 ################################################################
-if debugyaml == True: print("- CIDR Inbound YAML:" + str(cidr_inbound_list_output_str))
+if debugyaml is True: print("- CIDR Inbound YAML:" + str(cidr_inbound_list_output_str))
 print("Writing out CIDR inbound indicators to: " + falco_cidr_inbound_rules_file)
 writeFalcoRulesFileYaml(falco_cidr_inbound_rules_file, falco_cidr_inbound_list_name, cidr_inbound_list_output_str)

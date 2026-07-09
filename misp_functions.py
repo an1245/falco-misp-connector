@@ -7,7 +7,6 @@ import dateutil.tz
 import ipaddress
 import json 
 import urllib3
-import ipaddress
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -34,8 +33,8 @@ def fetchMISPIndicators(ip4_outbound_list, ip6_outbound_list, domain_list, file_
 
     print("Fetching New Indicators from Attributes for server: "+ misp_server_url + " after timestamp: " + str(indicatorAfterTimestamp)) 
     ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list,cidr_inbound_list = pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list,cidr_inbound_list, indicatorAfterTimestamp)    
-    if debug == True: printListSizes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, uri_list,cidr_outbound_list, sha256_dict,ip4_inbound_list, ip6_inbound_list,cidr_inbound_list)
-    if debug == True: print("Finished Fetching New Indicators from Attributes for server: "+ misp_server_url)
+    if debug is True: printListSizes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, uri_list,cidr_outbound_list, sha256_dict,ip4_inbound_list, ip6_inbound_list,cidr_inbound_list)
+    if debug is True: print("Finished Fetching New Indicators from Attributes for server: "+ misp_server_url)
     
     
     return ip4_outbound_list, ip6_outbound_list, domain_list, file_list, sha256_dict, uri_list, cidr_outbound_list, ip4_inbound_list, ip6_inbound_list, cidr_inbound_list
@@ -53,11 +52,11 @@ def pyMISPBuildHTTPBody(body):
             body["org"] = misp_organisation_name
     
     if 'misp_enforce_warning_list' in globals():
-            if (misp_enforce_warning_list == True or misp_enforce_warning_list == False):
+            if (misp_enforce_warning_list is True or misp_enforce_warning_list is False):
                 body["enforceWarninglist"] = misp_enforce_warning_list
     
     if 'misp_to_ids' in globals():
-            if (misp_to_ids == True or misp_to_ids == False):
+            if (misp_to_ids is True or misp_to_ids is False):
                 body["to_ids"] = misp_to_ids
        
     if 'misp_category_filter' in globals():
@@ -77,7 +76,7 @@ def pyMISPBuildHTTPBody(body):
             body["last"] = misp_event_published_after
 
     if 'misp_excludeDecayed' in globals():
-            if (misp_excludeDecayed == True or misp_excludeDecayed == False):
+            if (misp_excludeDecayed is True or misp_excludeDecayed is False):
                 body["excludeDecayed"] = misp_excludeDecayed
         
     return body
@@ -88,7 +87,7 @@ def pyMISPBuildHTTPBody(body):
 #      - no return value                     #
 ##############################################
 def printMISPBody(body):
-        if debug == True: 
+        if debug is True: 
             print("----------------- MISP Body Variables -----------------")
             for k,v in body.items():
                 print("--             " + str(k) + "=" + str(v))
@@ -111,12 +110,12 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, dom
 
     body = pyMISPBuildHTTPBody(body)
    
-    if debug == True:
+    if debug is True:
         printMISPBody(body)
 
     relative_path = 'attributes/restSearch'
     
-    if misp_is_https == True:
+    if misp_is_https is True:
             protocol = 'https'
     else:
             protocol = 'http'
@@ -141,7 +140,7 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, dom
             ioc_event_id = attribute['event_id']
             ioc_object_id = attribute['object_id']
             eventDictId = str(ioc_event_id) + "-" + str(ioc_object_id)
-            if not eventDictId in eventDict:
+            if eventDictId not in eventDict:
                 eventDict[eventDictId] = {"sha256":"", "filename":"", "size-in-bytes":"", "timestamp":""}
             
             match ioc_type: 
@@ -163,14 +162,14 @@ def pyMISPGetNewIndicatorsByAttributes(ip4_outbound_list, ip6_outbound_list, dom
                     ip4_inbound_list, ip6_inbound_list, cidr_inbound_list = checkIP(ioc_value, ip4_inbound_list, ip6_inbound_list, cidr_inbound_list)
                 case "domain":
                     if checkDomainName(ioc_value):
-                        if debugindicators == True: print(" - Adding Domain Indicator: " + str(ioc_value))
+                        if debugindicators is True: print(" - Adding Domain Indicator: " + str(ioc_value))
                         itemAdd(domain_list,ioc_value)
                 case "hostname":
                     if checkDomainName(ioc_value):
-                        if debugindicators == True: print(" - Adding Hostname Indicator: " + str(ioc_value))
+                        if debugindicators is True: print(" - Adding Hostname Indicator: " + str(ioc_value))
                         itemAdd(domain_list,ioc_value)
                 case "url":
-                        if debugindicators == True: print(" - Adding URL Indicator: " + str(ioc_value))
+                        if debugindicators is True: print(" - Adding URL Indicator: " + str(ioc_value))
                         itemAdd(uri_list,ioc_value)
                 case _:
                         if debugindicators: print("-- Identified Unknown Value:" + ioc_type)
@@ -209,54 +208,51 @@ def checkIP(ip,ip4_list, ip6_list,cidr_list):
         if "/" in ip:
             if debugindicators: print("this is a CIDR block - ",end="")
 
-            # This is a CIDR block
-            iscidr=True
-
             # Create an ipaddress object
             ipobject = ipaddress.ip_network(ip)
 
 
             # If this is a /32 (IPv4) or /128 (IPv6) prefix length then it's a host address
-            if (ipv6 == False and ipobject.prefixlen == 32) or (ipv6 == True and ipobject.prefixlen == 128):
+            if (ipv6 is False and ipobject.prefixlen == 32) or (ipv6 is True and ipobject.prefixlen == 128):
                 ipstr = ip.split("/")[0]
-                if ipv6 == False:
+                if ipv6 is False:
                     if checkIPv4Address(ipstr):
-                        if debugindicators == True: print("an IPv4 /32 mask - ",end="")
-                        if debugindicators == True: print("adding to ip4_list",end="")
+                        if debugindicators is True: print("an IPv4 /32 mask - ",end="")
+                        if debugindicators is True: print("adding to ip4_list",end="")
                         itemAdd(ip4_list, ipstr)
                     else:
                         print("Failed to validate IPv4 Indicator(1): " + str(ipstr),end="")
                 else:
                     if checkIPv6Address(ipstr):
-                        if debugindicators == True: print("an IPv6 /128 mask - ",end="")
-                        if debugindicators == True: print("adding to ip6_list ",end="")
+                        if debugindicators is True: print("an IPv6 /128 mask - ",end="")
+                        if debugindicators is True: print("adding to ip6_list ",end="")
                         itemAdd(ip6_list,ipstr)
                     else:
-                        if debugindicators == True: print("failed to validate indicator(1)",end="")
+                        if debugindicators is True: print("failed to validate indicator(1)",end="")
             # Otherwise it is a CIDR address
             else:
                 itemAdd(cidr_list, ip )
-                if debugindicators == True: print("it is valid - ",end="")
-                if debugindicators == True: print("adding to cidr_list ",end="")
+                if debugindicators is True: print("it is valid - ",end="")
+                if debugindicators is True: print("adding to cidr_list ",end="")
 
         # If there isn't a / then we are dealing with an IP address
         else:
             if debugindicators: print("this is an IP Address - ",end="")
             ipaddress.ip_address(ip)
-            if ipv6==True:
+            if ipv6 is True:
                 if checkIPv6Address(ip):
-                        if debugindicators == True: print("an IPv6 Address - ",end="")
-                        if debugindicators == True: print("adding to ip6_list",end="")
+                        if debugindicators is True: print("an IPv6 Address - ",end="")
+                        if debugindicators is True: print("adding to ip6_list",end="")
                         itemAdd(ip6_list,ip)
                 else:
-                        if debugindicators == True: print("failed to validate IPv6 Indicator(2)",end="")
+                        if debugindicators is True: print("failed to validate IPv6 Indicator(2)",end="")
             else:
                    if checkIPv4Address(ip):
-                        if debugindicators == True: print("an IPv4 address - ",end="")
-                        if debugindicators == True: print("adding to ip4_list",end="")
+                        if debugindicators is True: print("an IPv4 address - ",end="")
+                        if debugindicators is True: print("adding to ip4_list",end="")
                         itemAdd(ip4_list, ip)
                    else:
-                        if debugindicators == True: print("failed to validate IPv4 Indicator(2)",end="")
+                        if debugindicators is True: print("failed to validate IPv4 Indicator(2)",end="")
 
     # If there is any error in that is triggered then it's invalid.
     except ValueError:

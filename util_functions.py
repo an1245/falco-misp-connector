@@ -9,9 +9,9 @@ from config import *
 #  Function to check if item exists in JSON  #
 #      - returns true of false               #
 ##############################################
-def itemExists(list, item):
+def itemExists(json_list, item):
     
-    if item in list:
+    if item in json_list:
         return True
     else:
         return False
@@ -20,20 +20,20 @@ def itemExists(list, item):
 #  Function to add item to JSON              #
 #      - returns list                        #
 ##############################################
-def itemAdd(list, item):
-    if item in list:
-        return list
+def itemAdd(json_list, item):
+    if item in json_list:
+        return json_list
     else:
-        list.append(item)
-        return list
+        json_list.append(item)
+        return json_list
 
 ##############################################
 #  Function to remove item to JSON           #
 ##############################################
-def itemRemove(list, item):
-    if item in list:
-        list.remove(item)
-    return list
+def itemRemove(json_list, item):
+    if item in json_list:
+        json_list.remove(item)
+    return json_list
 
 
 def errorAndExit(function, responsecode, responsereason):
@@ -64,8 +64,8 @@ def utc_time_now():
     return datetime.now(timezone.utc)
 
 
-def printList(list):
-    for item in list:
+def printList(inlist):
+    for item in inlist:
         print(" --- list source: " + item["source"]);
         print(" --- list name: " + item["name"]);
 
@@ -96,7 +96,7 @@ def getValue(results, keys):
 ##############################################
 def checkIPv4Address(ip):
     
-    if re.match('(?:[0-9]{1,3}\.){3}[0-9]{1,3}',ip):
+    if re.match(r"(?:[0-9]{1,3}\.){3}[0-9]{1,3}",ip):
         return True
     else:
         return False
@@ -107,7 +107,7 @@ def checkIPv4Address(ip):
 ##############################################
 def checkIPv6Address(ip):
     
-    if re.match('(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))',ip):
+    if re.match(r"(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))",ip):
         return True
     else:
         return False
@@ -118,7 +118,7 @@ def checkIPv6Address(ip):
 ##############################################
 def checkDomainName(domain):
     
-    if re.match('(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]',domain):
+    if re.match(r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]",domain):
         return True
     else:
         return False
@@ -128,19 +128,19 @@ def checkDomainName(domain):
 #      - no return value                     #
 ##############################################
 def printListSizes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list, uri_list,cidr_outbound_list,sha256_dict,ip4_inbound_list,ip6_inbound_list,cidr_inbound_list):
-        if debug == True: print("----------------- List Sizes -----------------")
-        if debug == True: print("--             ip4_outbound_list size:" + str(len(ip4_outbound_list)))
-        if debug == True: print("--             ip6_outbound_list size:" + str(len(ip6_outbound_list)))
-        if debug == True: print("--             cidr_outbound_list size:" + str(len(cidr_outbound_list)))
-        if debug == True: print("--             ip4_inbound_list size:" + str(len(ip4_inbound_list)))
-        if debug == True: print("--             ip6_inbound_list size:" + str(len(ip6_inbound_list)))
-        if debug == True: print("--             cidr_inbound_list size:" + str(len(cidr_inbound_list)))
-        if debug == True: print("--             domain_list size:" + str(len(domain_list)))
-        if debug == True: print("--             file_list size:" + str(len(file_list)))
-        if debug == True: print("--             uri_list size:" + str(len(uri_list)))
+        if debug is True: print("----------------- List Sizes -----------------")
+        if debug is True: print("--             ip4_outbound_list size:" + str(len(ip4_outbound_list)))
+        if debug is True: print("--             ip6_outbound_list size:" + str(len(ip6_outbound_list)))
+        if debug is True: print("--             cidr_outbound_list size:" + str(len(cidr_outbound_list)))
+        if debug is True: print("--             ip4_inbound_list size:" + str(len(ip4_inbound_list)))
+        if debug is True: print("--             ip6_inbound_list size:" + str(len(ip6_inbound_list)))
+        if debug is True: print("--             cidr_inbound_list size:" + str(len(cidr_inbound_list)))
+        if debug is True: print("--             domain_list size:" + str(len(domain_list)))
+        if debug is True: print("--             file_list size:" + str(len(file_list)))
+        if debug is True: print("--             uri_list size:" + str(len(uri_list)))
 
-        if debug == True: print("--             sha256_dict size:" + str(len(sha256_dict)))
-        if debug == True: print("----------------------------------------------")
+        if debug is True: print("--             sha256_dict size:" + str(len(sha256_dict)))
+        if debug is True: print("----------------------------------------------")
 
 ##############################################
 #  Create YAML array to stored in Falco      #
@@ -148,11 +148,11 @@ def printListSizes(ip4_outbound_list, ip6_outbound_list, domain_list, file_list,
 ##############################################
 def createYAMLArray(input_list):
     input_list_output_str = "["
-    for input in input_list:
+    for input_v in input_list:
         if len(input_list_output_str) == 1:
-            input_list_output_str = input_list_output_str + input
+            input_list_output_str = input_list_output_str + input_v
         else:
-            input_list_output_str = input_list_output_str + "," + input
+            input_list_output_str = input_list_output_str + "," + input_v
     input_list_output_str = input_list_output_str + "]"
     return(input_list_output_str)
 
@@ -162,11 +162,11 @@ def createYAMLArray(input_list):
 ##############################################
 def createNLArray(input_list):
     input_list_output_str = ""
-    for input in input_list:
+    for input_v in input_list:
         if len(input_list_output_str) == 1:
-            input_list_output_str = input_list_output_str + input
+            input_list_output_str = input_list_output_str + input_v
         else:
-            input_list_output_str = input_list_output_str + input + "\n"
+            input_list_output_str = input_list_output_str + input_v + "\n"
     return(input_list_output_str)
 
 ##############################################
@@ -175,7 +175,7 @@ def createNLArray(input_list):
 ##############################################
 
 def outputJSONtoFile(json):
-    with open('json.txt', 'a') as f:
+    with open('json.txt', 'a', encoding="utf-8") as f:
         f.write(json)
     f.close()
 
@@ -186,9 +186,9 @@ def outputJSONtoFile(json):
 
 def expandIN(observation_expression):
 
-    if debug == True: print(" - Expanding IN Clause: " + observation_expression)
+    if debug is True: print(" - Expanding IN Clause: " + observation_expression)
 
-    pattern = r'\s+(\S+)(\s+IN\s+)(\(.*?\))'
+    pattern = r"\s+(\S+)(\s+IN\s+)(\(.*?\))"
     match = re.search(pattern, observation_expression)
 
     object_path = match.group(1)
@@ -211,6 +211,6 @@ def expandIN(observation_expression):
             outputstring = outputstring + " OR " + match.group(1) + " = '" + str(ip) + "'"
         count += 1
     
-    if debug == True: print(" -- Replacing: " + match.group(0) + " with " + outputstring )
+    if debug is True: print(" -- Replacing: " + match.group(0) + " with " + outputstring )
     outtext = re.sub(pattern,outputstring, observation_expression, count=1) 
     return outtext
