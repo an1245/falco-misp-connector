@@ -1,4 +1,4 @@
-python-dateutil==2.9.0.post0
+python-dateutil==3.0.0
 urllib3==2.7.0
 pymisp==2.5.34.1
 requests==2.34.2
